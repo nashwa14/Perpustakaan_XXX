@@ -24,7 +24,8 @@ $anggota_baru = $pdo->query("SELECT COUNT(*) FROM users WHERE role='anggota' AND
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- CSS ADMIN -->
+    <link rel="stylesheet" href="../assets/css/style_admin.css">
 </head>
 <body>
     <?php include '../includes/navbar_admin.php'; ?>

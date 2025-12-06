@@ -46,7 +46,8 @@ $list_buku = $pdo->query("SELECT * FROM books ORDER BY id DESC")->fetchAll();
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- CSS ADMIN -->
+    <link rel="stylesheet" href="../assets/css/style_admin.css">
 </head>
 
 <body>
@@ -212,8 +213,14 @@ $list_buku = $pdo->query("SELECT * FROM books ORDER BY id DESC")->fetchAll();
                                         </td>
                                         <td>
                                             <div class="action-buttons">
-                                                <a href="edit.php?id=<?= $row['id']; ?>" class="btn-edit">Edit</a>
-                                                <a href="hapus.php?id=<?= $row['id']; ?>" class="btn-delete">Hapus</a>
+                                                <a href="edit_buku.php?id=<?= $row['id']; ?>" class="btn-edit">
+                                                    <i class="bi bi-pencil me-1"></i>Edit
+                                                </a>
+                                                <a href="?hapus=<?= $row['id']; ?>" 
+                                                   class="btn-delete"
+                                                   onclick="return confirm('Yakin ingin menghapus buku <?= htmlspecialchars($row['judul']) ?>?')">
+                                                    <i class="bi bi-trash me-1"></i>Hapus
+                                                </a>
                                             </div>
                                         </td>
 

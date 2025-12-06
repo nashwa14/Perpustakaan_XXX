@@ -5,7 +5,7 @@
             <div class="footer-section">
                 <h3>
                     <i class="bi bi-building me-2"></i>
-                    Perpustakaan XXX
+                    Perpustakaan Yogakarta
                 </h3>
                 <p>Pusat informasi dan pengetahuan untuk mendukung produktivitas dan wawasan seluruh anggota.</p>
                 <div class="social-links mt-3">
@@ -56,15 +56,15 @@
                     <i class="bi bi-geo-alt me-2"></i>
                     Gedung Utama Lt. 2<br>
                     Jl. Jendral Sudirman No. Kav 10<br>
-                    Jakarta Pusat, 10220
+                    Yogakarta, 55000
                 </p>
                 <p>
                     <i class="bi bi-telephone me-2"></i>
-                    (021) 555-0199
+                    (0274) 555-0199
                 </p>
                 <p>
                     <i class="bi bi-envelope-at me-2"></i>
-                    perpus@perusahaan.com
+                    perpus@yogakarta.com
                 </p>
             </div>
 
@@ -80,7 +80,7 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <span>Sabtu - Minggu</span>
-                    <strong class="text-warning">Tutup</strong>
+                    <strong style="color: #f1c40f;">Tutup</strong>
                 </div>
             </div>
         </div>
@@ -88,42 +88,8 @@
         <!-- Footer Bottom -->
         <div class="footer-bottom">
             <p class="mb-0">
-                &copy; <?= date('Y') ?> Perpustakaan XXX. Hak Cipta Dilindungi.
+                &copy; <?= date('Y') ?> Perpustakaan Yogakarta. Hak Cipta Dilindungi.
             </p>
         </div>
     </div>
 </footer>
-
-<style>
-.social-links a {
-    color: rgba(255, 255, 255, 0.8);
-    transition: all 0.3s ease;
-    display: inline-block;
-}
-
-.social-links a:hover {
-    color: var(--tan);
-    transform: translateY(-3px);
-}
-
-.footer-section p,
-.footer-section a {
-    font-size: 0.95rem;
-    line-height: 1.8;
-}
-
-@media (max-width: 768px) {
-    .footer-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-    
-    .social-links {
-        justify-content: center;
-    }
-    
-    .footer-section a {
-        text-align: center;
-    }
-}
-</style>

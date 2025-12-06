@@ -47,7 +47,7 @@
                 <hr class="my-5">
 
                 <!-- Information Grid -->
-                <div class="row g-4">
+                <div class="row g-3">
                     <!-- Location -->
                     <div class="col-md-4">
                         <div class="text-center p-4 h-100" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 15px;">
@@ -81,12 +81,12 @@
 
                     <!-- Contact -->
                     <div class="col-md-4">
-                        <div class="text-center p-4 h-100" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 15px;">
+                        <div class="text-center p-3 h-100" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 15px;">
                             <div class="mb-3">
                                 <i class="bi bi-telephone-fill" style="font-size: 3rem; color: var(--coffee);"></i>
                             </div>
                             <h4 class="mb-3">Hubungi Kami</h4>
-                            <p class="mb-2">
+                            <p class="mb-3">
                                 <i class="bi bi-envelope me-2"></i>
                                 <strong>perpus@yogakarta.com</strong>
                             </p>

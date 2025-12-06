@@ -2,10 +2,11 @@
     <div class="container">
 
         <!-- Brand + Logo -->
-        <a class="navbar-brand d-flex align-items-center" href="index.php">
+        <a class="navbar-brand" href="index.php">
             <img src="assets/uploads/logo.png"
                  alt="Logo Perpustakaan"
-                 class="navbar-logo me-2">
+                 class="navbar-logo"
+                 onerror="this.style.display='none'">
             <span class="fw-semibold">Perpustakaan Yogakarta</span>
         </a>
 
@@ -23,37 +24,64 @@
         <div class="collapse navbar-collapse" id="navbarUser">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php">Katalog</a>
+                    <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>" 
+                       href="index.php">
+                        <i class="bi bi-book me-1"></i>
+                        Katalog
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="berita.php">Berita &amp; Agenda</a>
+                    <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'berita.php' ? 'active' : '' ?>" 
+                       href="berita.php">
+                        <i class="bi bi-newspaper me-1"></i>
+                        Berita &amp; Agenda
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="about.php">Tentang Kami</a>
+                    <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'about.php' ? 'active' : '' ?>" 
+                       href="about.php">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Tentang Kami
+                    </a>
                 </li>
 
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <?php if ($_SESSION['role'] == 'anggota'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="riwayat.php">Riwayat Pinjam</a>
+                            <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'riwayat.php' ? 'active' : '' ?>" 
+                               href="riwayat.php">
+                                <i class="bi bi-clock-history me-1"></i>
+                                Riwayat Pinjam
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="profil.php">Profil Saya</a>
+                            <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'profil.php' ? 'active' : '' ?>" 
+                               href="profil.php">
+                                <i class="bi bi-person-circle me-1"></i>
+                                Profil Saya
+                            </a>
                         </li>
                     <?php elseif ($_SESSION['role'] == 'admin'): ?>
                         <li class="nav-item">
                             <a class="nav-link nav-admin-btn" href="admin/dashboard.php">
+                                <i class="bi bi-speedometer2 me-1"></i>
                                 Panel Admin
                             </a>
                         </li>
                     <?php endif; ?>
 
                     <li class="nav-item">
-                        <a class="nav-link nav-logout" href="logout.php">Logout</a>
+                        <a class="nav-link nav-logout" 
+                           href="logout.php"
+                           onclick="return confirm('Yakin ingin logout?')">
+                            <i class="bi bi-box-arrow-right me-1"></i>
+                            Logout
+                        </a>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
                         <a class="btn btn-primary nav-login-btn ms-lg-2" href="login.php">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>
                             Login
                         </a>
                     </li>

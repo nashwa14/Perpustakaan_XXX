@@ -38,12 +38,13 @@ $total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Pending
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <!-- CSS ADMIN KHUSUS -->
+    <link rel="stylesheet" href="../assets/css/style_admin.css">
 </head>
 
 <body>
     <?php include '../includes/navbar_admin.php'; ?>
-    <div class="container my-2">
+    <div class="container my-3">
 
         <!-- Page Header -->
         <div class="page-header fade-in-up">
@@ -51,7 +52,7 @@ $total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Pending
                 <i class="bi bi-speedometer2 me-3"></i>
                 Dashboard Admin
             </h1>
-            <p>Selamat datang, <?= htmlspecialchars($_SESSION['nama']) ?>! Silahkan Kelola Perpustakaan XXX.</p>
+            <p>Selamat datang, <?= htmlspecialchars($_SESSION['nama']) ?>! Silahkan Kelola Perpustakaan Yogakarta.</p>
         </div>
 
         <!-- Statistics Cards -->
