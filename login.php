@@ -5,11 +5,9 @@ require_once 'config/database.php';
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
-
     $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
     $stmt->execute([$username]);
     $user = $stmt->fetch();
-
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['role'] = $user['role'];
@@ -22,20 +20,19 @@ if (isset($_POST['login'])) {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Perpustakaan Yogakarta</title>
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/auth.css">
 </head>
 <body class="auth-body">
-    
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
@@ -55,7 +52,6 @@ if (isset($_POST['login'])) {
                 unset($_SESSION['logout_success']); 
                 endif; 
                 ?>
-                
                 <?php if(isset($error)): ?>
                 <div class="alert alert-danger alert-dismissible fade show">
                     <i class="bi bi-exclamation-circle me-2"></i>
@@ -63,7 +59,6 @@ if (isset($_POST['login'])) {
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
                 <?php endif; ?>
-                
                 <form method="POST">
                     <div class="form-group">
                         <label>
@@ -80,7 +75,6 @@ if (isset($_POST['login'])) {
                                    autofocus>
                         </div>
                     </div>
-                    
                     <div class="form-group">
                         <label>
                             <i class="bi bi-lock me-1"></i>
@@ -98,7 +92,6 @@ if (isset($_POST['login'])) {
                                id="toggleIcon"></i>
                         </div>
                     </div>
-                    
                     <button type="submit" name="login" class="btn btn-primary w-100 mt-4">
                         <i class="bi bi-box-arrow-in-right me-2"></i>
                         Masuk Sekarang
@@ -108,7 +101,6 @@ if (isset($_POST['login'])) {
                 <div class="auth-divider">
                     <span>atau</span>
                 </div>
-                
                 <div class="text-center">
                     <p class="mb-2">Belum punya akun?</p>
                     <a href="register.php" class="btn btn-outline-secondary w-100">
@@ -116,7 +108,6 @@ if (isset($_POST['login'])) {
                         Daftar Sebagai Anggota
                     </a>
                 </div>
-                
                 <div class="text-center mt-4">
                     <a href="index.php" class="auth-back-link">
                         <i class="bi bi-arrow-left me-1"></i>
@@ -125,19 +116,16 @@ if (isset($_POST['login'])) {
                 </div>
             </div>
         </div>
-        
         <div class="auth-footer">
             <p>&copy; <?= date('Y') ?> Perpustakaan Yogakarta</p>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
     <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');
             const toggleIcon = document.getElementById('toggleIcon');
-            
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 toggleIcon.classList.remove('bi-eye');

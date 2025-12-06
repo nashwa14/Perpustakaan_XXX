@@ -1,7 +1,6 @@
 <footer>
     <div class="container">
         <div class="footer-content">
-            <!-- About Section -->
             <div class="footer-section">
                 <h3>
                     <i class="bi bi-building me-2"></i>
@@ -23,8 +22,6 @@
                     </a>
                 </div>
             </div>
-
-            <!-- Quick Links -->
             <div class="footer-section">
                 <h3>
                     <i class="bi bi-link-45deg me-2"></i>
@@ -46,7 +43,6 @@
                 <?php endif; ?>
             </div>
 
-            <!-- Contact Info -->
             <div class="footer-section">
                 <h3>
                     <i class="bi bi-envelope me-2"></i>
@@ -68,7 +64,6 @@
                 </p>
             </div>
 
-            <!-- Operating Hours -->
             <div class="footer-section">
                 <h3>
                     <i class="bi bi-clock me-2"></i>
@@ -84,8 +79,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Footer Bottom -->
         <div class="footer-bottom">
             <p class="mb-0">
                 &copy; <?= date('Y') ?> Perpustakaan Yogakarta. Hak Cipta Dilindungi.

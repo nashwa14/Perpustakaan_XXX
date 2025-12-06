@@ -2,7 +2,6 @@
 session_start();
 require_once '../config/database.php';
 if ($_SESSION['role'] != 'admin') header("Location: ../index.php");
-
 if (isset($_GET['kembali'])) {
     $id_pinjam = $_GET['kembali'];
     $id_buku   = $_GET['book_id'];
@@ -12,7 +11,6 @@ if (isset($_GET['kembali'])) {
     
     $success = "Buku berhasil dikembalikan!";
 }
-
 $query = "SELECT p.id, p.book_id, u.nama, b.judul, b.penulis, p.tanggal_pinjam, p.durasi_hari,
           DATEDIFF(CURDATE(), p.tanggal_pinjam) as hari_pinjam
           FROM borrows p 
@@ -21,7 +19,6 @@ $query = "SELECT p.id, p.book_id, u.nama, b.judul, b.penulis, p.tanggal_pinjam, 
           WHERE p.status = 'Disetujui'
           ORDER BY p.tanggal_pinjam ASC";
 $list = $pdo->query($query)->fetchAll();
-
 $total_dipinjam = count($list);
 $terlambat = count(array_filter($list, fn($item) => $item['hari_pinjam'] > $item['durasi_hari']));
 ?>
@@ -32,18 +29,13 @@ $terlambat = count(array_filter($list, fn($item) => $item['hari_pinjam'] > $item
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengembalian Buku - Perpustakaan Yogakarta</title>
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <!-- CSS ADMIN -->
     <link rel="stylesheet" href="../assets/css/style_admin.css">
 </head>
 <body>
     <?php include '../includes/navbar_admin.php'; ?>
-    
     <div class="container my-5">
-        
-        <!-- Page Header -->
         <div class="page-header fade-in-up">
             <h1>
                 <i class="bi bi-arrow-return-left me-3"></i>
@@ -60,7 +52,6 @@ $terlambat = count(array_filter($list, fn($item) => $item['hari_pinjam'] > $item
         </div>
         <?php endif; ?>
 
-        <!-- Statistics -->
         <div class="row g-4 mb-4 fade-in-up">
             <div class="col-md-5">
                 <div class="card text-center h-100">
@@ -82,7 +73,6 @@ $terlambat = count(array_filter($list, fn($item) => $item['hari_pinjam'] > $item
             </div>
         </div>
 
-        <!-- Active Borrows List -->
         <div class="card fade-in-up">
             <div class="card-header bg-white py-3">
                 <h5 class="mb-0">
@@ -179,7 +169,6 @@ $terlambat = count(array_filter($list, fn($item) => $item['hari_pinjam'] > $item
             </div>
         </div>
 
-        <!-- Info Box -->
         <div class="row g-3 mt-4">
             <div class="col-md-3">
                 <div class="card border-success fade-in-up">

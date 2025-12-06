@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once 'config/database.php';
-
 $search = $_GET['q'] ?? '';
 $query = "SELECT * FROM books WHERE judul LIKE :search OR penulis LIKE :search OR kategori LIKE :search";
 $stmt = $pdo->prepare($query);
@@ -15,21 +14,13 @@ $books = $stmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Katalog Perpustakaan Yogakarta</title>
-    
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    
     <?php include 'includes/navbar_user.php'; ?>
-
     <div class="container my-5">
-        
-        <!-- Search Section -->
         <div class="search-box fade-in-up">
             <form action="" method="GET" class="search-form">
                 <div class="input-group">
@@ -48,7 +39,6 @@ $books = $stmt->fetchAll();
             </form>
         </div>
 
-        <!-- Results Header -->
         <?php if (!empty($search)): ?>
         <div class="alert alert-info fade-in-up">
             <i class="bi bi-info-circle me-2"></i>
@@ -59,33 +49,28 @@ $books = $stmt->fetchAll();
         </div>
         <?php endif; ?>
 
-        <!-- Books Grid -->
         <?php if (count($books) > 0): ?>
             <div class="catalog-grid">
                 <?php foreach ($books as $book): ?>
                 <div class="card fade-in-up">
                     <?php $img = !empty($book['gambar']) ? $book['gambar'] : 'default_cover.jpg'; ?>
-                    
                     <div style="overflow: hidden;">
                         <img src="assets/uploads/<?= htmlspecialchars($img) ?>" 
                              alt="<?= htmlspecialchars($book['judul']) ?>"
                              class="card-img">
                     </div>
-                    
                     <div class="card-body">
                         <h3 class="card-title"><?= htmlspecialchars($book['judul']) ?></h3>
                         <p class="card-text">
                             <i class="bi bi-person me-1"></i>
                             <?= htmlspecialchars($book['penulis']) ?>
                         </p>
-                        
                         <?php if(!empty($book['kategori'])): ?>
                         <p class="card-text">
                             <i class="bi bi-tag me-1"></i>
                             <span class="badge bg-secondary"><?= htmlspecialchars($book['kategori']) ?></span>
                         </p>
-                        <?php endif; ?>
-                        
+                        <?php endif; ?>                        
                         <div class="mb-3">
                             <?php if($book['stok'] > 0): ?>
                                 <span class="status-badge status-available">
@@ -97,7 +82,6 @@ $books = $stmt->fetchAll();
                                 </span>
                             <?php endif; ?>
                         </div>
-                        
                         <a href="detail.php?id=<?= $book['id'] ?>" class="btn btn-primary w-100">
                             <i class="bi bi-eye me-2"></i>Lihat Detail
                         </a>
@@ -106,7 +90,6 @@ $books = $stmt->fetchAll();
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <!-- Empty State -->
             <div class="empty-state fade-in-up">
                 <div class="empty-state-icon">
                     <i class="bi bi-inbox"></i>
@@ -120,22 +103,15 @@ $books = $stmt->fetchAll();
                 <?php endif; ?>
             </div>
         <?php endif; ?>
-        
     </div>
 
     <?php include 'includes/footer.php'; ?>
-
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Custom Animation Script -->
     <script>
-        // Animate cards on scroll
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         };
-
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
@@ -146,7 +122,6 @@ $books = $stmt->fetchAll();
                 }
             });
         }, observerOptions);
-
         document.querySelectorAll('.card').forEach(card => {
             card.style.opacity = '0';
             card.style.transform = 'translateY(20px)';

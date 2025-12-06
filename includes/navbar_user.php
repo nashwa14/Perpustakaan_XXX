@@ -1,7 +1,5 @@
 <nav class="navbar navbar-expand-lg main-navbar fixed-top">
     <div class="container">
-
-        <!-- Brand + Logo -->
         <a class="navbar-brand d-flex align-items-center" href="index.php">
             <img src="assets/uploads/logo.png"
                  alt="Logo Perpustakaan"
@@ -9,16 +7,13 @@
                  onerror="this.style.display='none'">
             <span class="fw-semibold ms-2">Perpustakaan Yogakarta</span>
         </a>
-
         <button class="navbar-toggler" type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#navbarUser">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse align-items-center" id="navbarUser">
             <ul class="navbar-nav ms-auto gap-2 align-items-center">
-                <!-- menu Kamu -->
                 <li class="nav-item">
                     <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>" 
                        href="index.php">

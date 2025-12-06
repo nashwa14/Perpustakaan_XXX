@@ -28,8 +28,6 @@ $riwayat = $stmt->fetchAll();
     <?php include 'includes/navbar_user.php'; ?>
     
     <div class="container my-5">
-        
-        <!-- Page Header -->
         <div class="page-header fade-in-up">
             <h1>
                 <i class="bi bi-clock-history me-3"></i>
@@ -37,7 +35,6 @@ $riwayat = $stmt->fetchAll();
             </h1>
             <p>Lihat status dan histori peminjaman buku Anda</p>
         </div>
-
         <?php if(count($riwayat) > 0): ?>
         <div class="table-container fade-in-up">
             <table class="table">
@@ -102,7 +99,6 @@ $riwayat = $stmt->fetchAll();
             </table>
         </div>
 
-        <!-- Statistics -->
         <div class="row g-4 mt-4">
             <?php
             $total = count($riwayat);
@@ -125,9 +121,8 @@ $riwayat = $stmt->fetchAll();
         </div>
         <?php endif; ?>
     </div>
-    
-    <?php include 'includes/footer.php'; ?>
 
+    <?php include 'includes/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

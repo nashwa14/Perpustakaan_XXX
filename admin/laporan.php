@@ -31,32 +31,6 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/style_admin.css">
-
-    <style>
-        @media print {
-            .no-print {
-                display: none !important;
-            }
-
-            .card {
-                box-shadow: none;
-                border: 1px solid #ddd;
-            }
-
-            body {
-                background: white;
-            }
-
-            .navbar {
-                display: none;
-            }
-
-            thead {
-                background: #333 !important;
-                color: white !important;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -65,8 +39,6 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
     </div>
 
     <div class="container my-5">
-
-        <!-- Page Header -->
         <div class="page-header fade-in-up no-print">
             <h1>
                 <i class="bi bi-file-earmark-bar-graph me-3"></i>
@@ -75,7 +47,6 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
             <p>Lihat dan cetak laporan transaksi perpustakaan</p>
         </div>
 
-        <!-- Filter Section -->
         <div class="card mb-4 fade-in-up no-print">
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0">
@@ -167,7 +138,6 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
             </div>
         </div>
 
-        <!-- Report Header (Print Only) -->
         <div style="display: none;" class="text-center mb-4" id="printHeader">
             <h3>Perpustakaan Yogakarta</h3>
             <h5>Laporan Transaksi Peminjaman</h5>
@@ -175,7 +145,6 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
             <hr>
         </div>
 
-        <!-- Report Table -->
         <div class="card fade-in-up">
             <div class="card-header bg-white py-3">
                 <h5 class="mb-0">
@@ -234,7 +203,6 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
             </div>
         </div>
 
-        <!-- Print Footer -->
         <div style="display: none; margin-top: 50px;" id="printFooter">
             <div class="row">
                 <div class="col-6">
@@ -250,7 +218,6 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Show print headers/footers when printing
         window.addEventListener('beforeprint', function() {
             document.getElementById('printHeader').style.display = 'block';
             document.getElementById('printFooter').style.display = 'block';
@@ -261,7 +228,6 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
             document.getElementById('printFooter').style.display = 'none';
         });
 
-        // Export to Excel
         function exportToExcel() {
             const table = document.getElementById('reportTable');
             let html = table.outerHTML;
@@ -273,5 +239,4 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
         }
     </script>
 </body>
-
 </html>

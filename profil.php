@@ -2,7 +2,6 @@
 session_start();
 require_once 'config/database.php';
 if (!isset($_SESSION['user_id'])) header("Location: login.php");
-
 $id = $_SESSION['user_id'];
 $editMode = false;
 
@@ -25,26 +24,22 @@ if (isset($_POST['update'])) {
 if (isset($_GET['edit'])) {
     $editMode = true;
 }
-
 $user = $pdo->query("SELECT * FROM users WHERE id=$id")->fetch();
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Saya - Perpustakaan Yogakarta</title>
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <?php include 'includes/navbar_user.php'; ?>
-    
     <div class="container my-5">
-        
-        <!-- Page Header -->
         <div class="page-header fade-in-up">
             <h1>
                 <i class="bi bi-person-circle me-3"></i>
@@ -66,7 +61,6 @@ $user = $pdo->query("SELECT * FROM users WHERE id=$id")->fetch();
                         </div>
                         <?php endif; ?>
 
-                        <!-- Profile Info -->
                         <div class="text-center mb-4 pb-4 border-bottom">
                             <div class="mb-3">
                                 <i class="bi bi-person-circle" style="font-size: 5rem; color: var(--slate-gray);"></i>
@@ -82,7 +76,6 @@ $user = $pdo->query("SELECT * FROM users WHERE id=$id")->fetch();
                         </div>
 
                         <?php if (!$editMode): ?>
-                        <!-- View Mode -->
                         <h5 class="mb-4">
                             <i class="bi bi-info-circle me-2"></i>
                             Informasi Akun
@@ -150,7 +143,6 @@ $user = $pdo->query("SELECT * FROM users WHERE id=$id")->fetch();
                         </div>
                         
                         <?php else: ?>
-                        <!-- Edit Mode -->
                         <h5 class="mb-4">
                             <i class="bi bi-pencil-square me-2"></i>
                             Edit Informasi
@@ -229,7 +221,6 @@ $user = $pdo->query("SELECT * FROM users WHERE id=$id")->fetch();
             </div>
         </div>
     </div>
-    
     <?php include 'includes/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

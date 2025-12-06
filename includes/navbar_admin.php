@@ -1,7 +1,5 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container">
-
-        <!-- Brand / Logo -->
         <a href="dashboard.php" class="navbar-brand d-flex align-items-center">
             <img src="../assets/uploads/logo.png"
                 alt="Logo Perpustakaan"
@@ -10,8 +8,6 @@
                 onerror="this.style.display='none'">
             <span class="fw-semibold">Perpustakaan Yogakarta</span>
         </a>
-
-        <!-- Mobile Toggle -->
         <button class="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
@@ -21,10 +17,7 @@
             aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <!-- Menu -->
         <div class="collapse navbar-collapse" id="navbarAdmin">
-            <!-- Menu Items -->
             <div class="nav-menu d-flex align-items-center gap-3 ms-auto ms-lg-4">
                 <a href="kelola_buku.php"
                     class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'kelola_buku.php' || basename($_SERVER['PHP_SELF']) == 'edit_buku.php' ? 'active' : '' ?>">
@@ -59,6 +52,5 @@
                 </a>
             </div>
         </div>
-
     </div>
 </nav>

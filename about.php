@@ -14,10 +14,7 @@
 
 <body>
     <?php include 'includes/navbar_user.php'; ?>
-
     <div class="container my-5">
-
-        <!-- Page Header -->
         <div class="page-header fade-in-up">
             <h1>
                 <i class="bi bi-info-circle me-3"></i>
@@ -26,7 +23,6 @@
             <p>Pusat Informasi dan Pengetahuan untuk Anda</p>
         </div>
 
-        <!-- Main Content -->
         <div class="card fade-in-up">
             <div class="card-body p-5">
                 <div class="row mb-5">
@@ -43,12 +39,8 @@
                         </p>
                     </div>
                 </div>
-
                 <hr class="my-5">
-
-                <!-- Information Grid -->
                 <div class="row g-3">
-                    <!-- Location -->
                     <div class="col-md-4">
                         <div class="text-center p-4 h-100" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 15px;">
                             <div class="mb-3">
@@ -60,8 +52,6 @@
                             <p class="mb-0">Yogakarta, 55000</p>
                         </div>
                     </div>
-
-                    <!-- Operating Hours -->
                     <div class="col-md-4">
                         <div class="text-center p-4 h-100" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 15px;">
                             <div class="mb-3">
@@ -78,8 +68,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Contact -->
                     <div class="col-md-4">
                         <div class="text-center p-3 h-100" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 15px;">
                             <div class="mb-3">
@@ -101,8 +89,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Services -->
                 <div class="mt-5">
                     <h3 class="mb-4 text-center">
                         <i class="bi bi-star-fill me-2 text-warning"></i>
@@ -149,10 +135,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- CTA -->
         <?php if (!isset($_SESSION['user_id'])): ?>
-            <!-- CTA -->
             <div class="text-center mt-5 fade-in-up">
                 <h4 class="mb-3">Tertarik untuk Bergabung?</h4>
                 <p class="text-muted mb-4">Daftar sekarang dan nikmati akses ke ribuan koleksi buku kami</p>
@@ -162,12 +145,8 @@
                 </a>
             </div>
         <?php endif; ?>
-
     </div>
-
     <?php include 'includes/footer.php'; ?>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
