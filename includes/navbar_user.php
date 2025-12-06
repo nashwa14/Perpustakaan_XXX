@@ -26,21 +26,18 @@
                 <li class="nav-item">
                     <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>" 
                        href="index.php">
-                        <i class="bi bi-book me-1"></i>
                         Katalog
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'berita.php' ? 'active' : '' ?>" 
                        href="berita.php">
-                        <i class="bi bi-newspaper me-1"></i>
                         Berita &amp; Agenda
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'about.php' ? 'active' : '' ?>" 
                        href="about.php">
-                        <i class="bi bi-info-circle me-1"></i>
                         Tentang Kami
                     </a>
                 </li>
@@ -50,7 +47,6 @@
                         <li class="nav-item">
                             <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'riwayat.php' ? 'active' : '' ?>" 
                                href="riwayat.php">
-                                <i class="bi bi-clock-history me-1"></i>
                                 Riwayat Pinjam
                             </a>
                         </li>
@@ -58,7 +54,6 @@
                             <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'profil.php' ? 'active' : '' ?>" 
                                href="profil.php">
                                 <i class="bi bi-person-circle me-1"></i>
-                                Profil Saya
                             </a>
                         </li>
                     <?php elseif ($_SESSION['role'] == 'admin'): ?>

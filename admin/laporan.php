@@ -116,7 +116,7 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
         </div>
 
         <!-- Statistics Cards -->
-        <div class="row g-4 mb-4 fade-in-up">
+        <div class="row g-2 mb-4 fade-in-up">
             <div class="col-md-3">
                 <div class="card text-center">
                     <div class="card-body">

@@ -7,6 +7,7 @@
   --coffee: #6f4e37;
   --slate-gray: #7c98b3;
   --space-cadet: #1e3a5f;
+  --bg-soft: rgba(0,0,0,0.05);
 
   /* Neutral Tone */
   --black-100: #1a1a1a;
@@ -338,9 +339,7 @@ body {
   color: var(--black-100);
 }
 
-/* ========================================
-   CARDS
-======================================== */
+
 .card {
   background: var(--white);
   border-radius: 15px;

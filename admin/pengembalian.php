@@ -62,7 +62,7 @@ $terlambat = count(array_filter($list, fn($item) => $item['hari_pinjam'] > $item
 
         <!-- Statistics -->
         <div class="row g-4 mb-4 fade-in-up">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="card text-center h-100">
                     <div class="card-body">
                         <i class="bi bi-book" style="font-size: 3rem; color: var(--coffee);"></i>
@@ -71,7 +71,7 @@ $terlambat = count(array_filter($list, fn($item) => $item['hari_pinjam'] > $item
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="card text-center h-100">
                     <div class="card-body">
                         <i class="bi bi-exclamation-triangle" style="font-size: 3rem; color: var(--error);"></i>
@@ -181,7 +181,7 @@ $terlambat = count(array_filter($list, fn($item) => $item['hari_pinjam'] > $item
 
         <!-- Info Box -->
         <div class="row g-3 mt-4">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card border-success fade-in-up">
                     <div class="card-body">
                         <h6 class="text-success mb-3">
@@ -192,7 +192,7 @@ $terlambat = count(array_filter($list, fn($item) => $item['hari_pinjam'] > $item
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card border-warning fade-in-up">
                     <div class="card-body">
                         <h6 class="text-warning mb-3">
@@ -203,7 +203,7 @@ $terlambat = count(array_filter($list, fn($item) => $item['hari_pinjam'] > $item
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card border-danger fade-in-up">
                     <div class="card-body">
                         <h6 class="text-danger mb-3">

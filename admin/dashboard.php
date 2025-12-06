@@ -2,11 +2,9 @@
 session_start();
 require_once '../config/database.php';
 if ($_SESSION['role'] != 'admin') header("Location: ../index.php");
-
 if (isset($_GET['act']) && isset($_GET['id'])) {
     $id = $_GET['id'];
     $status = $_GET['act'] == 'approve' ? 'Disetujui' : 'Ditolak';
-
     $pdo->prepare("UPDATE borrows SET status = ? WHERE id = ?")->execute([$status, $id]);
 
     if ($status == 'Disetujui') {
@@ -30,15 +28,12 @@ $total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Pending
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - Perpustakaan Yogakarta</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <!-- CSS ADMIN KHUSUS -->
     <link rel="stylesheet" href="../assets/css/style_admin.css">
 </head>
 
@@ -56,7 +51,7 @@ $total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Pending
         </div>
 
         <!-- Statistics Cards -->
-        <div class="row g-4 mb-5 fade-in-up">
+        <div class="row g-2 mb-5 fade-in-up">
             <div class="col-md-3">
                 <div class="card text-center h-100">
                     <div class="card-body">
@@ -201,7 +196,7 @@ $total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Pending
         </div>
 
         <!-- Quick Actions -->
-        <div class="row g-3 mt-4 fade-in-up">
+        <div class="row g- mt-4 fade-in-up">
             <div class="col-md-12">
                 <h5 class="mb-3">
                     <i class="bi bi-lightning-fill me-2" style="color: var(--coffee);"></i>
@@ -219,7 +214,7 @@ $total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Pending
 
             <!-- Publikasi Berita -->
             <div class="col-md-3">
-                <a href="kelola_berita.php" class="btn btn-outline-success w-100 py-3" style="border-color: var(--space-cadet); color: var(--space-cadet);">
+                <a href="kelola_berita.php" class="btn btn-outline-primary w-100 py-3" style="border-color: var(--space-cadet); color: var(--space-cadet);">
                     <i class="bi bi-newspaper fs-4 d-block mb-2" style="color: var(--space-cadet);"></i>
                     Publikasi Berita
                 </a>
@@ -227,7 +222,7 @@ $total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Pending
 
             <!-- Proses Pengembalian -->
             <div class="col-md-3">
-                <a href="pengembalian.php" class="btn btn-outline-warning w-100 py-3" style="border-color: var(--slate-gray); color: var(--slate-gray);">
+                <a href="pengembalian.php" class="btn btn-outline-secondary w-100 py-3" style="border-color: var(--slate-gray); color: var(--slate-gray);">
                     <i class="bi bi-arrow-return-left fs-4 d-block mb-2" style="color: var(--slate-gray);"></i>
                     Proses Pengembalian
                 </a>

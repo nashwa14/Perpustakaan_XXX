@@ -2,15 +2,11 @@
 session_start();
 require_once '../config/database.php';
 if ($_SESSION['role'] != 'admin') header("Location: ../index.php");
-
 if (isset($_GET['hapus'])) {
     $pdo->prepare("DELETE FROM users WHERE id=?")->execute([$_GET['hapus']]);
     $success = "Anggota berhasil dihapus!";
 }
-
 $users = $pdo->query("SELECT * FROM users WHERE role='anggota' ORDER BY created_at DESC")->fetchAll();
-
-// Get statistics
 $total_anggota = count($users);
 $anggota_baru = $pdo->query("SELECT COUNT(*) FROM users WHERE role='anggota' AND DATE(created_at) >= DATE_SUB(NOW(), INTERVAL 30 DAY)")->fetchColumn();
 ?>
@@ -21,18 +17,13 @@ $anggota_baru = $pdo->query("SELECT COUNT(*) FROM users WHERE role='anggota' AND
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Anggota - Perpustakaan Yogakarta</title>
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <!-- CSS ADMIN -->
     <link rel="stylesheet" href="../assets/css/style_admin.css">
 </head>
 <body>
-    <?php include '../includes/navbar_admin.php'; ?>
-    
+    <?php include '../includes/navbar_admin.php'; ?>  
     <div class="container my-5">
-        
-        <!-- Page Header -->
         <div class="page-header fade-in-up">
             <h1>
                 <i class="bi bi-people-fill me-3"></i>
@@ -49,9 +40,8 @@ $anggota_baru = $pdo->query("SELECT COUNT(*) FROM users WHERE role='anggota' AND
         </div>
         <?php endif; ?>
 
-        <!-- Statistics -->
         <div class="row g-4 mb-4 fade-in-up">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="card text-center h-100">
                     <div class="card-body">
                         <i class="bi bi-people" style="font-size: 3rem; color: var(--success);"></i>
@@ -60,7 +50,7 @@ $anggota_baru = $pdo->query("SELECT COUNT(*) FROM users WHERE role='anggota' AND
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <div class="card text-center h-100">
                     <div class="card-body">
                         <i class="bi bi-person-plus" style="font-size: 3rem; color: var(--coffee);"></i>

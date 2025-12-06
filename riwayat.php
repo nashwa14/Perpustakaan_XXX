@@ -110,43 +110,6 @@ $riwayat = $stmt->fetchAll();
             $disetujui = count(array_filter($riwayat, fn($r) => $r['status'] == 'Disetujui'));
             $dikembalikan = count(array_filter($riwayat, fn($r) => $r['status'] == 'Dikembalikan'));
             ?>
-            <div class="col-md-3">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <i class="bi bi-collection fs-1 text-primary mb-2"></i>
-                        <h3 class="mb-0"><?= $total ?></h3>
-                        <p class="text-muted mb-0">Total Buku Dipinjam</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <i class="bi bi-hourglass-split fs-1 text-warning mb-2"></i>
-                        <h3 class="mb-0"><?= $pending ?></h3>
-                        <p class="text-muted mb-0">Menunggu</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <i class="bi bi-book fs-1 text-info mb-2"></i>
-                        <h3 class="mb-0"><?= $disetujui ?></h3>
-                        <p class="text-muted mb-0">Sedang Dipinjam</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <i class="bi bi-check-circle fs-1 text-success mb-2"></i>
-                        <h3 class="mb-0"><?= $dikembalikan ?></h3>
-                        <p class="text-muted mb-0">Selesai</p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <?php else: ?>
         <div class="empty-state fade-in-up">
