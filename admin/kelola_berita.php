@@ -2,7 +2,6 @@
 session_start();
 require_once '../config/database.php';
 if ($_SESSION['role'] != 'admin') { header("Location: ../index.php"); exit; }
-
 if (isset($_POST['tambah_berita'])) {
     $judul = $_POST['judul'];
     $isi   = $_POST['isi'];
@@ -10,13 +9,11 @@ if (isset($_POST['tambah_berita'])) {
     $pdo->prepare($sql)->execute([$judul, $isi]);
     $success = "Berita berhasil diterbitkan!";
 }
-
 if (isset($_GET['hapus'])) {
     $id = $_GET['hapus'];
     $pdo->prepare("DELETE FROM news WHERE id = ?")->execute([$id]);
     $success = "Berita berhasil dihapus!";
 }
-
 $berita = $pdo->query("SELECT * FROM news ORDER BY created_at DESC")->fetchAll();
 ?>
 
@@ -29,15 +26,11 @@ $berita = $pdo->query("SELECT * FROM news ORDER BY created_at DESC")->fetchAll()
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <!-- CSS ADMIN -->
     <link rel="stylesheet" href="../assets/css/style_admin.css">
 </head>
 <body>
     <?php include '../includes/navbar_admin.php'; ?>
-
     <div class="container my-5">
-        
-        <!-- Page Header -->
         <div class="page-header fade-in-up">
             <h1>
                 <i class="bi bi-newspaper me-3"></i>
@@ -54,7 +47,6 @@ $berita = $pdo->query("SELECT * FROM news ORDER BY created_at DESC")->fetchAll()
         </div>
         <?php endif; ?>
 
-        <!-- Add News Form -->
         <div class="card mb-4 fade-in-up">
             <div class="card-header bg-success text-white">
                 <h5 class="mb-0">
@@ -104,7 +96,6 @@ $berita = $pdo->query("SELECT * FROM news ORDER BY created_at DESC")->fetchAll()
             </div>
         </div>
 
-        <!-- News List -->
         <div class="card fade-in-up">
             <div class="card-header bg-white py-3">
                 <h5 class="mb-0">
@@ -149,18 +140,12 @@ $berita = $pdo->query("SELECT * FROM news ORDER BY created_at DESC")->fetchAll()
                                     </small>
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-info me-1" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#previewModal<?= $row['id'] ?>">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
                                     <a href="?hapus=<?= $row['id'] ?>" 
                                        class="btn btn-sm btn-danger" 
                                        onclick="return confirm('Yakin ingin menghapus berita ini?')">
                                         <i class="bi bi-trash"></i>
                                     </a>
 
-                                    <!-- Preview Modal -->
                                     <div class="modal fade" id="previewModal<?= $row['id'] ?>" tabindex="-1">
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
@@ -204,7 +189,6 @@ $berita = $pdo->query("SELECT * FROM news ORDER BY created_at DESC")->fetchAll()
             </div>
         </div>
 
-        <!-- Tips -->
         <div class="card mt-4 fade-in-up border-primary">
             <div class="card-body">
                 <h6 class="mb-3">
@@ -230,7 +214,6 @@ $berita = $pdo->query("SELECT * FROM news ORDER BY created_at DESC")->fetchAll()
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

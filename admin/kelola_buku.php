@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once '../config/database.php';
-
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
     header("Location: ../index.php");
     exit;
@@ -13,7 +12,6 @@ if (isset($_POST['tambah'])) {
     $kategori = $_POST['kategori'];
     $deskripsi = $_POST['deskripsi'];
     $stok = $_POST['stok'];
-
     $gambar = 'default_cover.jpg';
     if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] == 0) {
         $ext = pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
@@ -21,7 +19,6 @@ if (isset($_POST['tambah'])) {
         move_uploaded_file($_FILES['gambar']['tmp_name'], "../assets/uploads/" . $filename);
         $gambar = $filename;
     }
-
     $sql = "INSERT INTO books (judul, penulis, kategori, deskripsi, stok, gambar) VALUES (?, ?, ?, ?, ?, ?)";
     $pdo->prepare($sql)->execute([$judul, $penulis, $kategori, $deskripsi, $stok, $gambar]);
     $success = "Buku berhasil ditambahkan!";
@@ -32,28 +29,23 @@ if (isset($_GET['hapus'])) {
     $pdo->prepare("DELETE FROM books WHERE id = ?")->execute([$id]);
     $success = "Buku berhasil dihapus!";
 }
-
 $list_buku = $pdo->query("SELECT * FROM books ORDER BY id DESC")->fetchAll();
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Buku - Perpustakaan Yogakarta</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <!-- CSS ADMIN -->
     <link rel="stylesheet" href="../assets/css/style_admin.css">
 </head>
 
 <body>
     <?php include '../includes/navbar_admin.php'; ?>
     <div class="container my-3">
-        <!-- Page Header -->
         <div class="page-header fade-in-up">
             <h1>
                 <i class="bi bi-book-fill me-3"></i>
@@ -69,7 +61,6 @@ $list_buku = $pdo->query("SELECT * FROM books ORDER BY id DESC")->fetchAll();
             </div>
         <?php endif; ?>
 
-        <!-- Add Book Form -->
         <div class="card mb-4 fade-in-up">
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0">
@@ -149,7 +140,6 @@ $list_buku = $pdo->query("SELECT * FROM books ORDER BY id DESC")->fetchAll();
             </div>
         </div>
 
-        <!-- Books List -->
         <div class="card fade-in-up">
             <div class="card-header bg-white py-3">
                 <div class="d-flex justify-content-between align-items-center">
@@ -239,8 +229,6 @@ $list_buku = $pdo->query("SELECT * FROM books ORDER BY id DESC")->fetchAll();
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

@@ -61,7 +61,6 @@ $anggota_baru = $pdo->query("SELECT COUNT(*) FROM users WHERE role='anggota' AND
             </div>
         </div>
 
-        <!-- Members List -->
         <div class="card fade-in-up">
             <div class="card-header bg-white py-3">
                 <div class="d-flex justify-content-between align-items-center">
@@ -150,7 +149,6 @@ $anggota_baru = $pdo->query("SELECT COUNT(*) FROM users WHERE role='anggota' AND
             </div>
         </div>
 
-        <!-- Info Box -->
         <div class="card mt-4 fade-in-up border-info">
             <div class="card-body">
                 <h6 class="mb-3">
@@ -169,11 +167,9 @@ $anggota_baru = $pdo->query("SELECT COUNT(*) FROM users WHERE role='anggota' AND
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Search functionality
         document.getElementById('searchInput').addEventListener('keyup', function() {
             const searchValue = this.value.toLowerCase();
             const tableRows = document.querySelectorAll('#membersTable tbody tr');
-            
             tableRows.forEach(row => {
                 const nama = row.cells[2].textContent.toLowerCase();
                 const username = row.cells[3].textContent.toLowerCase();

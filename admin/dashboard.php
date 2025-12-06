@@ -11,15 +11,11 @@ if (isset($_GET['act']) && isset($_GET['id'])) {
         $stmt = $pdo->prepare("SELECT book_id FROM borrows WHERE id = ?");
         $stmt->execute([$id]);
         $book_id = $stmt->fetchColumn();
-
         $pdo->prepare("UPDATE books SET stok = stok - 1 WHERE id = ?")->execute([$book_id]);
     }
     header("Location: dashboard.php");
 }
-
 $pendings = $pdo->query("SELECT p.id, u.nama, b.judul, p.durasi_hari, p.tanggal_pinjam FROM borrows p JOIN users u ON p.user_id = u.id JOIN books b ON p.book_id = b.id WHERE p.status = 'Pending' ORDER BY p.tanggal_pinjam DESC")->fetchAll();
-
-// Statistics
 $total_buku = $pdo->query("SELECT COUNT(*) FROM books")->fetchColumn();
 $total_anggota = $pdo->query("SELECT COUNT(*) FROM users WHERE role='anggota'")->fetchColumn();
 $total_pinjam = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Disetujui'")->fetchColumn();
@@ -40,8 +36,6 @@ $total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Pending
 <body>
     <?php include '../includes/navbar_admin.php'; ?>
     <div class="container my-3">
-
-        <!-- Page Header -->
         <div class="page-header fade-in-up">
             <h1>
                 <i class="bi bi-speedometer2 me-3"></i>
@@ -50,7 +44,6 @@ $total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Pending
             <p>Selamat datang, <?= htmlspecialchars($_SESSION['nama']) ?>! Silahkan Kelola Perpustakaan Yogakarta.</p>
         </div>
 
-        <!-- Statistics Cards -->
         <div class="row g-2 mb-5 fade-in-up">
             <div class="col-md-3">
                 <div class="card text-center h-100">
@@ -113,7 +106,6 @@ $total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Pending
             </div>
         </div>
 
-        <!-- Pending Requests -->
         <div class="card fade-in-up">
             <div class="card-header bg-white py-3">
                 <h4 class="mb-0">
@@ -161,25 +153,18 @@ $total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Pending
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-start gap-2">
-
-                                                <!-- Approve -->
                                                 <a href="?act=approve&id=<?= $row['id'] ?>"
                                                     class="btn btn-sm btn-approve"
                                                     onclick="return confirm('Setujui peminjaman ini?')">
                                                     <i class="bi bi-check-circle"></i>
                                                 </a>
-
-                                                <!-- Reject -->
                                                 <a href="?act=reject&id=<?= $row['id'] ?>"
                                                     class="btn btn-sm btn-reject"
                                                     onclick="return confirm('Tolak peminjaman ini?')">
                                                     <i class="bi bi-x-circle"></i>
                                                 </a>
-
                                             </div>
                                         </td>
-
-
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -195,7 +180,6 @@ $total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Pending
             </div>
         </div>
 
-        <!-- Quick Actions -->
         <div class="row g- mt-4 fade-in-up">
             <div class="col-md-12">
                 <h5 class="mb-3">
@@ -203,32 +187,24 @@ $total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Pending
                     Aksi Cepat
                 </h5>
             </div>
-
-            <!-- Tambah Buku -->
             <div class="col-md-3">
                 <a href="kelola_buku.php" class="btn btn-outline-primary w-100 py-3" style="border-color: var(--coffee); color: var(--coffee);">
                     <i class="bi bi-plus-circle fs-4 d-block mb-2" style="color: var(--coffee);"></i>
                     Tambah Buku Baru
                 </a>
             </div>
-
-            <!-- Publikasi Berita -->
             <div class="col-md-3">
                 <a href="kelola_berita.php" class="btn btn-outline-primary w-100 py-3" style="border-color: var(--space-cadet); color: var(--space-cadet);">
                     <i class="bi bi-newspaper fs-4 d-block mb-2" style="color: var(--space-cadet);"></i>
                     Publikasi Berita
                 </a>
             </div>
-
-            <!-- Proses Pengembalian -->
             <div class="col-md-3">
                 <a href="pengembalian.php" class="btn btn-outline-secondary w-100 py-3" style="border-color: var(--slate-gray); color: var(--slate-gray);">
                     <i class="bi bi-arrow-return-left fs-4 d-block mb-2" style="color: var(--slate-gray);"></i>
                     Proses Pengembalian
                 </a>
             </div>
-
-            <!-- Lihat Laporan -->
             <div class="col-md-3">
                 <a href="laporan.php" class="btn btn-outline-secondary w-100 py-3" style="border-color: var(--tan); color: var(--tan);">
                     <i class="bi bi-file-earmark-bar-graph fs-4 d-block mb-2" style="color: var(--tan);"></i>
@@ -238,8 +214,6 @@ $total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status='Pending
         </div>
 
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

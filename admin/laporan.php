@@ -1,12 +1,12 @@
 <?php
 session_start();
 require_once '../config/database.php';
-
-if ($_SESSION['role'] != 'admin') { header("Location: ../index.php"); exit; }
-
+if ($_SESSION['role'] != 'admin') {
+    header("Location: ../index.php");
+    exit;
+}
 $start_date = $_GET['start'] ?? date('Y-m-01');
 $end_date   = $_GET['end'] ?? date('Y-m-d');
-
 $query = "SELECT p.id, u.nama, b.judul, b.penulis, p.tanggal_pinjam, p.durasi_hari, p.status 
           FROM borrows p 
           JOIN users u ON p.user_id = u.id 
@@ -16,8 +16,6 @@ $query = "SELECT p.id, u.nama, b.judul, b.penulis, p.tanggal_pinjam, p.durasi_ha
 $stmt = $pdo->prepare($query);
 $stmt->execute([$start_date, $end_date]);
 $laporan = $stmt->fetchAll();
-
-// Statistics
 $total_transaksi = count($laporan);
 $total_disetujui = count(array_filter($laporan, fn($r) => $r['status'] == 'Disetujui' || $r['status'] == 'Dikembalikan'));
 $total_pending = count(array_filter($laporan, fn($r) => $r['status'] == 'Pending'));
@@ -30,29 +28,44 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Perpustakaan - Perpustakaan Yogakarta</title>
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <!-- CSS ADMIN -->
     <link rel="stylesheet" href="../assets/css/style_admin.css">
-    
+
     <style>
         @media print {
-            .no-print { display: none !important; }
-            .card { box-shadow: none; border: 1px solid #ddd; }
-            body { background: white; }
-            .navbar { display: none; }
-            thead { background: #333 !important; color: white !important; }
+            .no-print {
+                display: none !important;
+            }
+
+            .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+
+            body {
+                background: white;
+            }
+
+            .navbar {
+                display: none;
+            }
+
+            thead {
+                background: #333 !important;
+                color: white !important;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="no-print">
         <?php include '../includes/navbar_admin.php'; ?>
     </div>
-    
+
     <div class="container my-5">
-        
+
         <!-- Page Header -->
         <div class="page-header fade-in-up no-print">
             <h1>
@@ -77,22 +90,22 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
                             <i class="bi bi-calendar-event me-1"></i>
                             Dari Tanggal
                         </label>
-                        <input type="date" 
-                               name="start" 
-                               class="form-control" 
-                               value="<?= $start_date ?>"
-                               required>
+                        <input type="date"
+                            name="start"
+                            class="form-control"
+                            value="<?= $start_date ?>"
+                            required>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">
                             <i class="bi bi-calendar-event me-1"></i>
                             Sampai Tanggal
                         </label>
-                        <input type="date" 
-                               name="end" 
-                               class="form-control" 
-                               value="<?= $end_date ?>"
-                               required>
+                        <input type="date"
+                            name="end"
+                            class="form-control"
+                            value="<?= $end_date ?>"
+                            required>
                     </div>
                     <div class="col-md-4">
                         <button type="submit" class="btn btn-primary w-100">
@@ -115,7 +128,6 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
             </div>
         </div>
 
-        <!-- Statistics Cards -->
         <div class="row g-2 mb-4 fade-in-up">
             <div class="col-md-3">
                 <div class="card text-center">
@@ -175,49 +187,49 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
                 </h5>
             </div>
             <div class="card-body p-0">
-                <?php if(count($laporan) > 0): ?>
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover mb-0" id="reportTable">
-                        <thead class="table-dark">
-                            <tr>
-                                <th width="5%">No</th>
-                                <th width="20%">Peminjam</th>
-                                <th width="25%">Buku</th>
-                                <th width="15%">Tgl Pinjam</th>
-                                <th width="10%">Durasi</th>
-                                <th width="15%">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php 
-                            $no = 1;
-                            foreach($laporan as $row): 
-                            ?>
-                            <tr>
-                                <td><?= $no++ ?></td>
-                                <td><?= htmlspecialchars($row['nama']) ?></td>
-                                <td>
-                                    <strong><?= htmlspecialchars($row['judul']) ?></strong><br>
-                                    <small class="text-muted"><?= htmlspecialchars($row['penulis']) ?></small>
-                                </td>
-                                <td><?= date('d M Y', strtotime($row['tanggal_pinjam'])) ?></td>
-                                <td><?= $row['durasi_hari'] ?> Hari</td>
-                                <td>
-                                    <span class="status-badge status-<?= $row['status'] ?>">
-                                        <?= $row['status'] ?>
-                                    </span>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+                <?php if (count($laporan) > 0): ?>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover mb-0" id="reportTable">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th width="5%">No</th>
+                                    <th width="20%">Peminjam</th>
+                                    <th width="25%">Buku</th>
+                                    <th width="15%">Tgl Pinjam</th>
+                                    <th width="10%">Durasi</th>
+                                    <th width="15%">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $no = 1;
+                                foreach ($laporan as $row):
+                                ?>
+                                    <tr>
+                                        <td><?= $no++ ?></td>
+                                        <td><?= htmlspecialchars($row['nama']) ?></td>
+                                        <td>
+                                            <strong><?= htmlspecialchars($row['judul']) ?></strong><br>
+                                            <small class="text-muted"><?= htmlspecialchars($row['penulis']) ?></small>
+                                        </td>
+                                        <td><?= date('d M Y', strtotime($row['tanggal_pinjam'])) ?></td>
+                                        <td><?= $row['durasi_hari'] ?> Hari</td>
+                                        <td>
+                                            <span class="status-badge status-<?= $row['status'] ?>">
+                                                <?= $row['status'] ?>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 <?php else: ?>
-                <div class="text-center py-5">
-                    <i class="bi bi-inbox" style="font-size: 4rem; color: var(--gray-30);"></i>
-                    <h5 class="mt-3 text-muted">Tidak ada data</h5>
-                    <p class="text-muted">Tidak ada transaksi pada periode yang dipilih</p>
-                </div>
+                    <div class="text-center py-5">
+                        <i class="bi bi-inbox" style="font-size: 4rem; color: var(--gray-30);"></i>
+                        <h5 class="mt-3 text-muted">Tidak ada data</h5>
+                        <p class="text-muted">Tidak ada transaksi pada periode yang dipilih</p>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
@@ -236,7 +248,7 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
         // Show print headers/footers when printing
         window.addEventListener('beforeprint', function() {
@@ -261,4 +273,5 @@ $total_ditolak = count(array_filter($laporan, fn($r) => $r['status'] == 'Ditolak
         }
     </script>
 </body>
+
 </html>
