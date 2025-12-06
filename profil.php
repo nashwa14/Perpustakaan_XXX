@@ -4,6 +4,7 @@ require_once 'config/database.php';
 if (!isset($_SESSION['user_id'])) header("Location: login.php");
 
 $id = $_SESSION['user_id'];
+$editMode = false;
 
 if (isset($_POST['update'])) {
     $nama = $_POST['nama'];
@@ -19,6 +20,10 @@ if (isset($_POST['update'])) {
     }
     $_SESSION['nama'] = $nama;
     $success = "Profil berhasil diperbarui!";
+}
+
+if (isset($_GET['edit'])) {
+    $editMode = true;
 }
 
 $user = $pdo->query("SELECT * FROM users WHERE id=$id")->fetch();
@@ -76,7 +81,76 @@ $user = $pdo->query("SELECT * FROM users WHERE id=$id")->fetch();
                             </span>
                         </div>
 
-                        <!-- Edit Form -->
+                        <?php if (!$editMode): ?>
+                        <!-- View Mode -->
+                        <h5 class="mb-4">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Informasi Akun
+                        </h5>
+                        
+                        <div class="mb-4">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <strong>
+                                        <i class="bi bi-person me-1"></i>
+                                        Nama Lengkap
+                                    </strong>
+                                </div>
+                                <div class="col-md-8">
+                                    <?= htmlspecialchars($user['nama']) ?>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <strong>
+                                        <i class="bi bi-shield-lock me-1"></i>
+                                        Username
+                                    </strong>
+                                </div>
+                                <div class="col-md-8">
+                                    <?= htmlspecialchars($user['username']) ?>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <strong>
+                                        <i class="bi bi-key me-1"></i>
+                                        Password
+                                    </strong>
+                                </div>
+                                <div class="col-md-8">
+                                    ••••••••
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <strong>
+                                        <i class="bi bi-calendar-check me-1"></i>
+                                        Bergabung Sejak
+                                    </strong>
+                                </div>
+                                <div class="col-md-8">
+                                    <?= date('d M Y', strtotime($user['created_at'])) ?>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <a href="profil.php?edit=true" class="btn btn-primary flex-fill">
+                                <i class="bi bi-pencil-square me-2"></i>
+                                Edit Profil
+                            </a>
+                            <a href="index.php" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Kembali
+                            </a>
+                        </div>
+                        
+                        <?php else: ?>
+                        <!-- Edit Mode -->
                         <h5 class="mb-4">
                             <i class="bi bi-pencil-square me-2"></i>
                             Edit Informasi
@@ -118,7 +192,8 @@ $user = $pdo->query("SELECT * FROM users WHERE id=$id")->fetch();
                                 <input type="password" 
                                        name="password" 
                                        class="form-control"
-                                       placeholder="Kosongkan jika tidak ingin mengganti">
+                                       placeholder="Kosongkan jika tidak ingin mengganti"
+                                       minlength="6">
                                 <small class="text-muted">
                                     <i class="bi bi-info-circle me-1"></i>
                                     Minimal 6 karakter untuk keamanan yang lebih baik
@@ -141,12 +216,14 @@ $user = $pdo->query("SELECT * FROM users WHERE id=$id")->fetch();
                                     <i class="bi bi-save me-2"></i>
                                     Simpan Perubahan
                                 </button>
-                                <a href="index.php" class="btn btn-outline-secondary">
+                                <a href="profil.php" class="btn btn-danger">
                                     <i class="bi bi-x-circle me-2"></i>
-                                    Batal
+                                    Batalkan
                                 </a>
                             </div>
                         </form>
+                        <?php endif; ?>
+                        
                     </div>
                 </div>
             </div>

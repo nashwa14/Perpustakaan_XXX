@@ -465,6 +465,50 @@ small, .small-text {
 }
 
 /* ========================================
+   PROFILE PAGE
+======================================== */
+.profile-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 5px solid var(--white);
+  box-shadow: var(--shadow-lg);
+  background: linear-gradient(135deg, var(--slate-gray), var(--space-cadet));
+  color: var(--white);
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+/* Info blocks on profile page */
+.info-display {
+  background: var(--gray-10);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-label {
+  font-weight: 600;
+  color: var(--gray-60);
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.info-value {
+  font-size: 1.1rem;
+  color: var(--black-90);
+}
+
+/* Edit mode default hidden */
+#editMode {
+  display: none;
+}
+
+
+/* ========================================
    CATALOG GRID - Responsive Grid System
 ======================================== */
 .catalog-grid {
@@ -928,6 +972,7 @@ footer {
   h2, .h2 { font-size: 1.75rem; }
   h3, .h3 { font-size: 1.5rem; }
 }
+
 
 /* Small Mobile */
 @media (max-width: 480px) {

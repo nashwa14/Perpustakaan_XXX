@@ -1,28 +1,24 @@
-<nav class="navbar navbar-expand-lg main-navbar">
+<nav class="navbar navbar-expand-lg main-navbar fixed-top">
     <div class="container">
 
         <!-- Brand + Logo -->
-        <a class="navbar-brand" href="index.php">
+        <a class="navbar-brand d-flex align-items-center" href="index.php">
             <img src="assets/uploads/logo.png"
                  alt="Logo Perpustakaan"
                  class="navbar-logo"
                  onerror="this.style.display='none'">
-            <span class="fw-semibold">Perpustakaan Yogakarta</span>
+            <span class="fw-semibold ms-2">Perpustakaan Yogakarta</span>
         </a>
 
-        <!-- Toggler mobile -->
         <button class="navbar-toggler" type="button"
                 data-bs-toggle="collapse"
-                data-bs-target="#navbarUser"
-                aria-controls="navbarUser"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
+                data-bs-target="#navbarUser">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Menu -->
-        <div class="collapse navbar-collapse" id="navbarUser">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <div class="collapse navbar-collapse align-items-center" id="navbarUser">
+            <ul class="navbar-nav ms-auto gap-2 align-items-center">
+                <!-- menu Kamu -->
                 <li class="nav-item">
                     <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>" 
                        href="index.php">
@@ -47,19 +43,20 @@
                         <li class="nav-item">
                             <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'riwayat.php' ? 'active' : '' ?>" 
                                href="riwayat.php">
-                                Riwayat Pinjam
+                                Riwayat
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link <?= basename($_SERVER['PHP_SELF']) == 'profil.php' ? 'active' : '' ?>" 
-                               href="profil.php">
-                                <i class="bi bi-person-circle me-1"></i>
+                               href="profil.php"
+                               title="Profil Saya">
+                                <i class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
                             </a>
                         </li>
                     <?php elseif ($_SESSION['role'] == 'admin'): ?>
                         <li class="nav-item">
                             <a class="nav-link nav-admin-btn" href="admin/dashboard.php">
-                                <i class="bi bi-speedometer2 me-1"></i>
+                                <i class="bi bi-speedometer2 me-2"></i>
                                 Panel Admin
                             </a>
                         </li>
@@ -69,7 +66,7 @@
                         <a class="nav-link nav-logout" 
                            href="logout.php"
                            onclick="return confirm('Yakin ingin logout?')">
-                            <i class="bi bi-box-arrow-right me-1"></i>
+                            <i class="bi bi-box-arrow-right me-2"></i>
                             Logout
                         </a>
                     </li>
