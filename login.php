@@ -59,6 +59,7 @@ if (isset($_POST['login'])) {
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
                 <?php endif; ?>
+                
                 <form method="POST">
                     <div class="form-group">
                         <label>
@@ -75,6 +76,7 @@ if (isset($_POST['login'])) {
                                    autofocus>
                         </div>
                     </div>
+                    
                     <div class="form-group">
                         <label>
                             <i class="bi bi-lock me-1"></i>
@@ -91,7 +93,14 @@ if (isset($_POST['login'])) {
                                onclick="togglePassword()"
                                id="toggleIcon"></i>
                         </div>
+                        
+                        <div class="text-end mt-2">
+                            <a href="about.php" class="text-decoration-none small text-muted forgot-link">
+                                Lupa Password? Hubungi Admin
+                            </a>
+                        </div>
                     </div>
+                    
                     <button type="submit" name="login" class="btn btn-primary w-100 mt-4">
                         <i class="bi bi-box-arrow-in-right me-2"></i>
                         Masuk Sekarang
