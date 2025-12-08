@@ -15,7 +15,16 @@ if (isset($_GET['act']) && isset($_GET['id'])) {
     }
     header("Location: dashboard.php");
 }
-$pendings = $pdo->query("SELECT p.id, u.nama, b.judul, p.durasi_hari, p.tanggal_pinjam FROM borrows p JOIN users u ON p.user_id = u.id JOIN books b ON p.book_id = b.id WHERE p.status = 'Pending' ORDER BY p.tanggal_pinjam DESC")->fetchAll();
+
+// Pagination for pending loans
+$limit = 5;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+$total_pending = $pdo->query("SELECT COUNT(*) FROM borrows WHERE status = 'Pending'")->fetchColumn();
+$total_pages = ceil($total_pending / $limit);
+
+$pendings = $pdo->query("SELECT p.id, u.nama, b.judul, p.durasi_hari, p.tanggal_pinjam FROM borrows p JOIN users u ON p.user_id = u.id JOIN books b ON p.book_id = b.id WHERE p.status = 'Pending' ORDER BY p.tanggal_pinjam DESC LIMIT $limit OFFSET $offset")->fetchAll();
 
 // Statistik utama
 $total_buku = $pdo->query("SELECT COUNT(*) FROM books")->fetchColumn();
@@ -45,15 +54,29 @@ for ($i = 5; $i >= 0; $i--) {
     $loan_activity_data[] = $count;
 }
 
-// Data untuk grafik Book Category
-$kategori_buku = $pdo->query("SELECT kategori, COUNT(*) as total FROM books GROUP BY kategori")->fetchAll();
-$category_labels = [];
-$category_data = [];
-$total_all_books = array_sum(array_column($kategori_buku, 'total'));
-foreach ($kategori_buku as $kat) {
-    $category_labels[] = $kat['kategori'];
-    $category_data[] = $kat['total'];
+// Data untuk grafik Book Category - pisahkan kategori yang ada koma
+$kategori_buku = $pdo->query("SELECT kategori FROM books")->fetchAll();
+$category_count = [];
+
+// Hitung setiap kategori individual
+foreach ($kategori_buku as $buku) {
+    $categories = array_map('trim', explode(',', $buku['kategori']));
+    foreach ($categories as $cat) {
+        if (!empty($cat)) {
+            if (!isset($category_count[$cat])) {
+                $category_count[$cat] = 0;
+            }
+            $category_count[$cat]++;
+        }
+    }
 }
+
+// Sort by count descending
+arsort($category_count);
+
+$category_labels = array_keys($category_count);
+$category_data = array_values($category_count);
+$total_all_books = array_sum($category_data);
 ?>
 
 <!DOCTYPE html>
@@ -224,6 +247,46 @@ foreach ($kategori_buku as $kat) {
                 <?php endif; ?>
             </div>
         </div>
+        
+        <!-- Pagination -->
+        <?php if ($total_pages > 1): ?>
+            <div class="pagination-wrapper">
+                <div class="pagination-info">
+                    Menampilkan <?= $offset + 1 ?>-<?= min($offset + $limit, $total_pending) ?> dari <?= $total_pending ?>
+                </div>
+                <div class="pagination-controls">
+                    <?php if ($page > 1): ?>
+                        <a href="?page=<?= $page - 1 ?>" class="pagination-btn pagination-arrow">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    <?php else: ?>
+                        <span class="pagination-btn pagination-arrow disabled">
+                            <i class="bi bi-chevron-left"></i>
+                        </span>
+                    <?php endif; ?>
+                    
+                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                        <?php if ($i == 1 || $i == $total_pages || ($i >= $page - 1 && $i <= $page + 1)): ?>
+                            <a href="?page=<?= $i ?>" class="pagination-btn <?= $i == $page ? 'active' : '' ?>">
+                                <?= $i ?>
+                            </a>
+                        <?php elseif ($i == $page - 2 || $i == $page + 2): ?>
+                            <span class="pagination-dots">...</span>
+                        <?php endif; ?>
+                    <?php endfor; ?>
+                    
+                    <?php if ($page < $total_pages): ?>
+                        <a href="?page=<?= $page + 1 ?>" class="pagination-btn pagination-arrow">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    <?php else: ?>
+                        <span class="pagination-btn pagination-arrow disabled">
+                            <i class="bi bi-chevron-right"></i>
+                        </span>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endif; ?>
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -283,19 +346,33 @@ foreach ($kategori_buku as $kat) {
 
         // Book Category Chart
         const bookCategoryCtx = document.getElementById('bookCategoryChart').getContext('2d');
+        
+        // Generate distinct colors for each category - consistent brown tones
+        const categoryColors = [
+            '#6F4D38', // Dark brown
+            '#8B6F47', // Medium brown
+            '#A67C52', // Light brown
+            '#C19A6B', // Tan brown
+            '#D5B893', // Light tan
+            '#9B7653', // Warm brown
+            '#7D5E3F', // Deep brown
+            '#B8956A', // Sandy brown
+            '#8A6E4F', // Mocha
+            '#A58B6F', // Beige brown
+            '#74583D', // Espresso
+            '#C5A572', // Caramel
+            '#6B5344', // Coffee brown
+            '#B49574', // Hazelnut
+            '#805D3B'  // Chestnut
+        ];
+        
         new Chart(bookCategoryCtx, {
             type: 'doughnut',
             data: {
                 labels: <?= json_encode($category_labels) ?>,
                 datasets: [{
                     data: <?= json_encode($category_data) ?>,
-                    backgroundColor: [
-                        '#6F4D38',
-                        '#D5B893',
-                        '#9e9e9e',
-                        '#e0e0e0',
-                        '#bdbdbd'
-                    ],
+                    backgroundColor: categoryColors.slice(0, <?= count($category_labels) ?>),
                     borderWidth: 0,
                     cutout: '70%'
                 }]

@@ -198,6 +198,172 @@ body {
   color: #5d4037;
 }
 
+/* ========================================
+   KELOLA BUKU - SEARCH FILTER ADD SECTION
+======================================== */
+.book-control-card {
+  border: 1px solid #6F4D38;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(111, 77, 56, 0.08);
+  padding: 20px;
+  margin-bottom: 32px;
+}
+
+.book-control-row {
+  display: grid;
+  grid-template-columns: 2fr auto auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.book-search-wrapper {
+  position: relative;
+}
+
+.book-search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6F4D38;
+  font-size: 18px;
+  pointer-events: none;
+}
+
+.book-search-input {
+  width: 100%;
+  padding: 12px 16px 12px 48px;
+  border: 1px solid #6F4D38;
+  border-radius: 10px;
+  font-size: 15px;
+  background: white;
+  height: 48px;
+  font-weight: 400;
+  color: #424242;
+  transition: all 0.2s ease;
+}
+
+.book-search-input:focus {
+  outline: none;
+  border-color: #5d4037;
+  box-shadow: 0 0 0 3px rgba(111, 77, 56, 0.1);
+}
+
+.book-search-input::placeholder {
+  color: #9e9e9e;
+}
+
+.book-filter-btn {
+  background: #6F4D38;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-weight: 500;
+  color: white;
+  font-size: 15px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 160px;
+}
+
+.book-filter-btn:hover {
+  background: #5d4037;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(111, 77, 56, 0.3);
+}
+
+.book-filter-btn i {
+  font-size: 14px;
+  color: white;
+  transition: transform 0.2s ease;
+}
+
+.book-filter-btn[aria-expanded="true"] i {
+  transform: rotate(180deg);
+}
+
+.book-filter-menu {
+  border-radius: 10px;
+  border: 1px solid #6F4D38;
+  box-shadow: 0 8px 24px rgba(111, 77, 56, 0.15);
+  margin-top: 8px;
+  padding: 8px 0;
+  min-width: 200px;
+}
+
+.book-filter-menu .dropdown-item {
+  padding: 10px 18px;
+  font-size: 14px;
+  color: #424242;
+  transition: all 0.15s ease;
+}
+
+.book-filter-menu .dropdown-item:hover {
+  background: #f5f5f5;
+  color: #6F4D38;
+}
+
+.book-filter-menu .dropdown-item.active {
+  background: #6F4D38;
+  color: white;
+  font-weight: 500;
+}
+
+.book-filter-menu .dropdown-divider {
+  margin: 8px 0;
+  border-color: #e0e0e0;
+}
+
+.book-add-btn {
+  background: #6F4D38;
+  color: white;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-weight: 500;
+  font-size: 15px;
+  height: 48px;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  width: auto;
+  min-width: 220px;
+}
+
+.book-add-btn:hover {
+  background: #5d4037;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(111, 77, 56, 0.3);
+}
+
+.book-add-btn i {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .book-control-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .book-control-card {
+    padding: 16px;
+  }
+}
+
 .profile-dropdown-admin .dropdown-item.text-danger {
   color: #dc3545 !important;
 }
@@ -270,7 +436,7 @@ body {
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  border: 1px solid #f5f5f5;
+  border: 1px solid #6F4D38;
   transition: all 0.3s ease;
   flex: 1;
   min-width: 200px;
@@ -322,19 +488,27 @@ body {
   color: #2196f3;
 }
 
+.metric-change-success {
+  color: #4caf50;
+}
+
+.metric-change-primary {
+  color: #2196f3;
+}
+
 /* Dashboard Table Card - Clean Design */
 .dashboard-table-card {
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  border: 1px solid #f5f5f5;
+  border: 1px solid #6F4D38;
   overflow: hidden;
 }
 
 .table-card-header {
   padding: 1.5rem 1.75rem;
   background: #ffffff;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: none;
 }
 
 .table-icon-badge {
@@ -373,7 +547,7 @@ body {
   background: white;
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  border: 1px solid #f5f5f5;
+  border: 1px solid #6F4D38;
   padding: 1.5rem 1.75rem;
   height: 100%;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -559,6 +733,242 @@ body {
   font-size: 0.9rem;
   color: #9e9e9e;
   margin-bottom: 0;
+}
+
+/* ========================================
+   BOOK TABLE STYLING
+======================================== */
+.book-table-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #6F4D38;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.book-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.book-table thead {
+  background: #f9f9f9;
+}
+
+.book-table thead th {
+  padding: 14px 12px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #424242;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+  vertical-align: middle;
+}
+
+.book-table tbody tr {
+  border-bottom: 1px solid #f5f5f5;
+  transition: background-color 0.15s ease;
+}
+
+.book-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.book-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+.book-table tbody td {
+  padding: 12px 12px;
+  vertical-align: middle;
+  font-size: 13px;
+  color: #424242;
+  line-height: 1.5;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.book-cover {
+  width: 45px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.book-title-cell {
+  font-weight: 400;
+  color: #1a1a1a;
+  line-height: 1.4;
+  max-width: 280px;
+  padding-right: 8px !important;
+}
+
+.book-author-cell {
+  color: #666666;
+  font-weight: 400;
+}
+
+/* Specific column spacing adjustments */
+.book-table tbody td:nth-child(4) {
+  padding-left: 8px !important;
+}
+
+.book-table thead th:nth-child(4) {
+  padding-left: 8px !important;
+}
+
+/* Table responsive wrapper */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0;
+}
+
+.category-badges-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  background: #F5E6D3;
+  color: #6F4D38;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.book-stock-cell {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.book-action-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.book-action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  color: #666666;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.book-action-icon i {
+  font-size: 14px;
+}
+
+.edit-icon:hover {
+  background: #f0f0f0;
+  border-color: #333333;
+  color: #333333;
+}
+
+.delete-icon:hover {
+  background: #fff5f5;
+  border-color: #333333;
+  color: #333333;
+}
+
+/* Pagination Styling */
+.pagination-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  margin-top: 16px;
+}
+
+.pagination-info {
+  font-size: 14px;
+  color: #666666;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  border-radius: 6px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  color: #333333;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.pagination-btn:hover:not(.disabled):not(.active) {
+  background: #f5f5f5;
+  border-color: #999999;
+}
+
+.pagination-btn.active {
+  background: #6F4D38;
+  color: white;
+  border-color: #6F4D38;
+  font-weight: 600;
+}
+
+.pagination-btn.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.pagination-arrow {
+  font-size: 12px;
+}
+
+.pagination-dots {
+  color: #999999;
+  padding: 0 4px;
+  font-size: 14px;
 }
 
 /* ========================================

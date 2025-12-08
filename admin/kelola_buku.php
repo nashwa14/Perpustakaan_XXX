@@ -29,7 +29,16 @@ if (isset($_GET['hapus'])) {
     $pdo->prepare("DELETE FROM books WHERE id = ?")->execute([$id]);
     $success = "Buku berhasil dihapus!";
 }
-$list_buku = $pdo->query("SELECT * FROM books ORDER BY id DESC")->fetchAll();
+
+// Pagination
+$limit = 5;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+$total_books = $pdo->query("SELECT COUNT(*) FROM books")->fetchColumn();
+$total_pages = ceil($total_books / $limit);
+
+$list_buku = $pdo->query("SELECT * FROM books ORDER BY id DESC LIMIT $limit OFFSET $offset")->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -45,37 +54,88 @@ $list_buku = $pdo->query("SELECT * FROM books ORDER BY id DESC")->fetchAll();
 
 <body>
     <?php include '../includes/navbar_admin.php'; ?>
-    <div class="container my-3">
-        <div class="page-header fade-in-up">
-            <h1>
-                <i class="bi bi-book-fill me-3"></i>
-                Kelola Koleksi Buku
-            </h1>
+    <div class="container my-4">
+        <!-- Page Header -->
+        <div class="welcome-header fade-in-up">
+            <h1 class="welcome-title">Pengelolaan Koleksi Buku</h1>
+            <p class="welcome-subtitle">Kelola koleksi buku perpustakaan dengan mudah</p>
         </div>
 
         <?php if (isset($success)): ?>
-            <div class="alert alert-success alert-dismissible fade show fade-in-up">
+            <div class="alert alert-success alert-dismissible fade show fade-in-up" style="border-left: 4px solid #4caf50; background: #e8f5e9; border-radius: 8px;">
                 <i class="bi bi-check-circle me-2"></i>
                 <?= $success ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         <?php endif; ?>
 
-        <div class="card mb-4 fade-in-up">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">
-                    <i class="bi bi-plus-circle me-2"></i>
-                    Tambah Buku Baru
-                </h5>
+        <!-- Search, Filter and Add Button -->
+        <div class="book-control-card fade-in-up">
+            <div class="book-control-row">
+                <div class="book-search-wrapper">
+                    <i class="bi bi-search book-search-icon"></i>
+                    <input type="text" class="book-search-input" placeholder="Cari..." id="searchInput">
+                </div>
+                
+                <div class="dropdown">
+                    <button class="book-filter-btn" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span id="filterText">Kategori</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                    <ul class="dropdown-menu book-filter-menu" aria-labelledby="filterDropdown">
+                        <li><a class="dropdown-item filter-option active" href="#" data-filter="all">Semua Kategori</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <?php
+                        // Ambil semua kategori dan split untuk mendapatkan kategori individual
+                        $all_books_categories = $pdo->query("SELECT kategori FROM books")->fetchAll();
+                        $unique_categories = [];
+                        
+                        foreach ($all_books_categories as $book) {
+                            // Split kategori dengan koma dan trim whitespace
+                            $cats = array_map('trim', explode(',', $book['kategori']));
+                            foreach ($cats as $cat) {
+                                if (!empty($cat) && !in_array(strtolower($cat), array_map('strtolower', $unique_categories))) {
+                                    $unique_categories[] = $cat;
+                                }
+                            }
+                        }
+                        
+                        // Sort categories
+                        sort($unique_categories, SORT_STRING | SORT_FLAG_CASE);
+                        
+                        foreach ($unique_categories as $cat):
+                        ?>
+                        <li><a class="dropdown-item filter-option" href="#" data-filter="<?= htmlspecialchars($cat) ?>"><?= htmlspecialchars($cat) ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+                
+                <button class="book-add-btn" data-bs-toggle="modal" data-bs-target="#addBookModal">
+                    <i class="bi bi-plus-lg"></i>
+                    <span>Tambah Buku Baru</span>
+                </button>
             </div>
-            <div class="card-body p-4">
-                <form action="" method="POST" enctype="multipart/form-data">
+        </div>
+
+        <!-- Modal Tambah Buku -->
+        <div class="modal fade" id="addBookModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+                    <div class="modal-header" style="border-bottom: 1px solid #f0f0f0; padding: 1.5rem 2rem;">
+                        <div>
+                            <h5 class="modal-title" style="color: #424242; font-weight: 600; font-size: 1.25rem; margin-bottom: 0.25rem;">Tambah Buku Baru</h5>
+                            <p class="text-muted mb-0" style="font-size: 0.875rem;">Lengkapi informasi buku untuk menambahkan ke koleksi</p>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="padding: 2rem;">
+                        <form action="" method="POST" enctype="multipart/form-data" id="addBookForm">
                     <div class="row">
                         <div class="col-md-8">
                             <div class="form-group">
                                 <label>
                                     <i class="bi bi-bookmark me-1"></i>
-                                    Judul Buku
+                                    Buku
                                 </label>
                                 <input type="text" name="judul" class="form-control" placeholder="Masukkan judul buku" required>
                             </div>
@@ -132,103 +192,211 @@ $list_buku = $pdo->query("SELECT * FROM books ORDER BY id DESC")->fetchAll();
                         </small>
                     </div>
 
-                    <button type="submit" name="tambah" class="btn btn-primary">
-                        <i class="bi bi-save me-2"></i>
-                        Simpan Buku
-                    </button>
-                </form>
+                        </form>
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid #f0f0f0; padding: 1rem 2rem;">
+                        <button type="button" class="btn" style="background: #f5f5f5; color: #616161; border-radius: 8px; padding: 0.6rem 1.5rem;" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" name="tambah" form="addBookForm" class="btn" style="background: #6F4D38; color: white; border-radius: 8px; padding: 0.6rem 1.5rem;">
+                            Simpan Buku
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="card fade-in-up">
-            <div class="card-header bg-white py-3">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">
-                        <i class="bi bi-list-ul me-2"></i>
-                        Daftar Koleksi (<?= count($list_buku) ?> Buku)
-                    </h5>
-                    <span class="badge bg-secondary"><?= array_sum(array_column($list_buku, 'stok')) ?> Total Stok</span>
-                </div>
-            </div>
-            <div class="card-body p-0">
+        <div class="book-table-card fade-in-up">
+            <div class="table-responsive">
                 <?php if (count($list_buku) > 0): ?>
-                    <div class="table-responsive">
-                        <table class="table table-hover mb-0">
-                            <thead class="table-light">
+                    <table class="table book-table mb-0">
+                        <thead>
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="10%">Sampul</th>
+                                <th width="25%">Judul Buku</th>
+                                <th width="20%">Penulis</th>
+                                <th width="15%">Kategori</th>
+                                <th width="10%">Stok</th>
+                                <th width="10%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $no = 1;
+                            foreach ($list_buku as $row):
+                            ?>
                                 <tr>
-                                    <th width="5%">No</th>
-                                    <th width="10%">Cover</th>
-                                    <th width="30%">Judul & Penulis</th>
-                                    <th width="15%">Kategori</th>
-                                    <th width="10%">Stok</th>
-                                    <th width="15%">Ditambahkan</th>
-                                    <th width="15%">Aksi</th>
+                                    <td><?= $no++ ?>.</td>
+                                    <td>
+                                        <img src="../assets/uploads/<?= htmlspecialchars($row['gambar']) ?>" 
+                                             alt="Cover" 
+                                             class="book-cover">
+                                    </td>
+                                    <td class="book-title-cell"><?= htmlspecialchars($row['judul']) ?></td>
+                                    <td class="book-author-cell"><?= htmlspecialchars($row['penulis']) ?></td>
+                                    <td>
+                                        <div class="category-badges-wrapper">
+                                            <?php
+                                            $categories = array_map('trim', explode(',', $row['kategori']));
+                                            foreach ($categories as $cat):
+                                                if (!empty($cat)):
+                                            ?>
+                                                <span class="category-badge"><?= htmlspecialchars($cat) ?></span>
+                                            <?php
+                                                endif;
+                                            endforeach;
+                                            ?>
+                                        </div>
+                                    </td>
+                                    <td class="book-stock-cell"><?= $row['stok'] ?></td>
+                                    <td>
+                                        <div class="book-action-buttons">
+                                            <a href="edit_buku.php?id=<?= $row['id']; ?>" 
+                                               class="book-action-icon edit-icon"
+                                               title="Edit">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </a>
+                                            <a href="?hapus=<?= $row['id']; ?>" 
+                                               class="book-action-icon delete-icon"
+                                               onclick="return confirm('Yakin ingin menghapus buku <?= htmlspecialchars($row['judul']) ?>?')"
+                                               title="Hapus">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </a>
+                                        </div>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $no = 1;
-                                foreach ($list_buku as $row):
-                                ?>
-                                    <tr>
-                                        <td><?= $no++ ?></td>
-                                        <td>
-                                            <img src="../assets/uploads/<?= htmlspecialchars($row['gambar']) ?>"
-                                                class="rounded"
-                                                style="width: 50px; height: 70px; object-fit: cover;">
-                                        </td>
-                                        <td>
-                                            <strong><?= htmlspecialchars($row['judul']) ?></strong><br>
-                                            <small class="text-muted">
-                                                <i class="bi bi-person me-1"></i>
-                                                <?= htmlspecialchars($row['penulis']) ?>
-                                            </small>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-secondary">
-                                                <?= htmlspecialchars($row['kategori']) ?>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <?php if ($row['stok'] > 0): ?>
-                                                <span class="badge bg-success"><?= $row['stok'] ?></span>
-                                            <?php else: ?>
-                                                <span class="badge bg-danger">Habis</span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td>
-                                            <small class="text-muted">
-                                                <?= date('d M Y', strtotime($row['created_at'])) ?>
-                                            </small>
-                                        </td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <a href="edit_buku.php?id=<?= $row['id']; ?>" class="btn-edit">
-                                                    <i class="bi bi-pencil me-1"></i>Edit
-                                                </a>
-                                                <a href="?hapus=<?= $row['id']; ?>" 
-                                                   class="btn-delete"
-                                                   onclick="return confirm('Yakin ingin menghapus buku <?= htmlspecialchars($row['judul']) ?>?')">
-                                                    <i class="bi bi-trash me-1"></i>Hapus
-                                                </a>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 <?php else: ?>
-                    <div class="text-center py-5">
-                        <i class="bi bi-inbox" style="font-size: 4rem; color: var(--gray-30);"></i>
-                        <h5 class="mt-3 text-muted">Belum ada buku</h5>
-                        <p class="text-muted">Tambahkan buku pertama Anda di atas</p>
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="bi bi-inbox"></i>
+                        </div>
+                        <h5 class="empty-title">Belum ada buku</h5>
+                        <p class="empty-subtitle">Tambahkan buku pertama Anda menggunakan form di atas</p>
                     </div>
                 <?php endif; ?>
             </div>
         </div>
+        
+        <!-- Pagination -->
+        <?php if ($total_pages > 1): ?>
+            <div class="pagination-wrapper">
+                <div class="pagination-info">
+                    Menampilkan <?= $offset + 1 ?>-<?= min($offset + $limit, $total_books) ?> dari <?= $total_books ?>
+                </div>
+                <div class="pagination-controls">
+                    <?php if ($page > 1): ?>
+                        <a href="?page=<?= $page - 1 ?>" class="pagination-btn pagination-arrow">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    <?php else: ?>
+                        <span class="pagination-btn pagination-arrow disabled">
+                            <i class="bi bi-chevron-left"></i>
+                        </span>
+                    <?php endif; ?>
+                    
+                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                        <?php if ($i == 1 || $i == $total_pages || ($i >= $page - 1 && $i <= $page + 1)): ?>
+                            <a href="?page=<?= $i ?>" class="pagination-btn <?= $i == $page ? 'active' : '' ?>">
+                                <?= $i ?>
+                            </a>
+                        <?php elseif ($i == $page - 2 || $i == $page + 2): ?>
+                            <span class="pagination-dots">...</span>
+                        <?php endif; ?>
+                    <?php endfor; ?>
+                    
+                    <?php if ($page < $total_pages): ?>
+                        <a href="?page=<?= $page + 1 ?>" class="pagination-btn pagination-arrow">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    <?php else: ?>
+                        <span class="pagination-btn pagination-arrow disabled">
+                            <i class="bi bi-chevron-right"></i>
+                        </span>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .dropdown-menu {
+            z-index: 1050 !important;
+            position: absolute !important;
+        }
+        .dropdown-item.active,
+        .dropdown-item:active {
+            background-color: #6F4D38 !important;
+            color: white !important;
+        }
+        .dropdown-item:hover {
+            background-color: #f9f5f2;
+            color: #6F4D38;
+        }
+        .dropdown-item.active:hover {
+            background-color: #5d4037 !important;
+            color: white !important;
+        }
+        .dropdown-item {
+            transition: all 0.2s ease;
+        }
+    </style>
+    <script>
+        // Filter functionality
+        let currentFilter = 'all';
+        document.querySelectorAll('.filter-option').forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.preventDefault();
+                currentFilter = this.dataset.filter;
+                
+                // Remove active class from all options
+                document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('active'));
+                // Add active class to clicked option
+                this.classList.add('active');
+                
+                applyFilters();
+                
+                // Update button text to show selected category
+                const filterText = document.getElementById('filterText');
+                if (currentFilter === 'all') {
+                    filterText.textContent = 'Kategori';
+                } else {
+                    filterText.textContent = currentFilter;
+                }
+            });
+        });
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('keyup', applyFilters);
+        
+        // Apply filters function
+        function applyFilters() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            const tableRows = document.querySelectorAll('.book-table tbody tr');
+            
+            tableRows.forEach(row => {
+                const judul = row.cells[2].textContent.toLowerCase();
+                const penulis = row.cells[3].textContent.toLowerCase();
+                
+                // Get all category badges from the category cell
+                const categoryCell = row.cells[4];
+                const categoryBadges = categoryCell.querySelectorAll('.category-badge');
+                const bookCategories = Array.from(categoryBadges).map(badge => 
+                    badge.textContent.trim().toLowerCase()
+                );
+                
+                const matchesSearch = judul.includes(searchValue) || penulis.includes(searchValue);
+                const matchesFilter = currentFilter === 'all' || bookCategories.includes(currentFilter.toLowerCase());
+                
+                if (matchesSearch && matchesFilter) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>

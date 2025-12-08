@@ -2,6 +2,7 @@
 session_start();
 require_once '../config/database.php';
 if ($_SESSION['role'] != 'admin') { header("Location: ../index.php"); exit; }
+
 if (isset($_POST['tambah_berita'])) {
     $judul = $_POST['judul'];
     $isi   = $_POST['isi'];
@@ -9,12 +10,28 @@ if (isset($_POST['tambah_berita'])) {
     $pdo->prepare($sql)->execute([$judul, $isi]);
     $success = "Berita berhasil diterbitkan!";
 }
+
 if (isset($_GET['hapus'])) {
     $id = $_GET['hapus'];
     $pdo->prepare("DELETE FROM news WHERE id = ?")->execute([$id]);
     $success = "Berita berhasil dihapus!";
 }
-$berita = $pdo->query("SELECT * FROM news ORDER BY created_at DESC")->fetchAll();
+
+// Pagination
+$limit = 5;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+// Get total count
+$total_berita = $pdo->query("SELECT COUNT(*) FROM news")->fetchColumn();
+$total_pages = ceil($total_berita / $limit);
+
+// Get paginated news
+$berita = $pdo->query("SELECT * FROM news ORDER BY created_at DESC LIMIT $limit OFFSET $offset")->fetchAll();
+
+// Stats
+$berita_bulan_ini = $pdo->query("SELECT COUNT(*) FROM news WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE())")->fetchColumn();
+$berita_minggu_ini = $pdo->query("SELECT COUNT(*) FROM news WHERE YEARWEEK(created_at, 1) = YEARWEEK(CURRENT_DATE(), 1)")->fetchColumn();
 ?>
 
 <!DOCTYPE html>
@@ -30,122 +47,107 @@ $berita = $pdo->query("SELECT * FROM news ORDER BY created_at DESC")->fetchAll()
 </head>
 <body>
     <?php include '../includes/navbar_admin.php'; ?>
-    <div class="container my-5">
-        <div class="page-header fade-in-up">
-            <h1>
-                <i class="bi bi-newspaper me-3"></i>
-                Kelola Informasi & Berita
-            </h1>
-            <p>Publikasikan berita dan agenda kegiatan perpustakaan</p>
+    <div class="container my-4">
+        <!-- Page Header -->
+        <div class="welcome-header fade-in-up">
+            <h1 class="welcome-title">Kelola Berita & Informasi</h1>
+            <p class="welcome-subtitle">Publikasikan berita dan agenda kegiatan perpustakaan</p>
         </div>
 
         <?php if(isset($success)): ?>
-        <div class="alert alert-success alert-dismissible fade show fade-in-up">
+        <div class="alert alert-success alert-dismissible fade show fade-in-up" style="border-left: 4px solid #4caf50; background: #e8f5e9; border-radius: 8px;">
             <i class="bi bi-check-circle me-2"></i>
             <?= $success ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
         <?php endif; ?>
 
-        <div class="card mb-4 fade-in-up">
-            <div class="card-header bg-success text-white">
-                <h5 class="mb-0">
-                    <i class="bi bi-plus-circle me-2"></i>
-                    Publikasikan Berita Baru
-                </h5>
-            </div>
-            <div class="card-body p-4">
-                <form method="POST">
-                    <div class="form-group">
-                        <label>
-                            <i class="bi bi-bookmark me-1"></i>
-                            Judul Berita / Agenda
-                        </label>
-                        <input type="text" 
-                               name="judul" 
-                               class="form-control" 
-                               placeholder="Contoh: Koleksi Buku Baru Bulan Ini"
-                               required>
-                        <small class="text-muted">
-                            <i class="bi bi-info-circle me-1"></i>
-                            Judul yang menarik akan meningkatkan minat baca
-                        </small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>
-                            <i class="bi bi-text-paragraph me-1"></i>
-                            Isi Berita / Informasi
-                        </label>
-                        <textarea name="isi" 
-                                  class="form-control" 
-                                  rows="6" 
-                                  placeholder="Tulis informasi lengkap di sini..."
-                                  required></textarea>
-                        <small class="text-muted">
-                            <i class="bi bi-info-circle me-1"></i>
-                            Gunakan Enter untuk membuat paragraf baru
-                        </small>
-                    </div>
-                    
-                    <button type="submit" name="tambah_berita" class="btn btn-success">
-                        <i class="bi bi-send me-2"></i>
-                        Terbitkan Sekarang
+        <!-- Search, Filter and Add Button -->
+        <div class="book-control-card fade-in-up">
+            <div class="book-control-row">
+                <div class="book-search-wrapper">
+                    <i class="bi bi-search book-search-icon"></i>
+                    <input type="text" class="book-search-input" placeholder="Cari judul berita..." id="searchInput">
+                </div>
+                
+                <div class="dropdown">
+                    <button class="book-filter-btn" type="button" id="dateFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span id="dateFilterText">Tanggal</span>
+                        <i class="bi bi-chevron-down"></i>
                     </button>
-                </form>
+                    <ul class="dropdown-menu book-filter-menu" aria-labelledby="dateFilterDropdown">
+                        <li><a class="dropdown-item date-filter-option active" href="#" data-filter="all">Semua</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item date-filter-option" href="#" data-filter="today">Hari Ini</a></li>
+                        <li><a class="dropdown-item date-filter-option" href="#" data-filter="week">7 Hari</a></li>
+                        <li><a class="dropdown-item date-filter-option" href="#" data-filter="month">30 Hari</a></li>
+                        <li><a class="dropdown-item date-filter-option" href="#" data-filter="year">Tahun Ini</a></li>
+                    </ul>
+                </div>
+
+                <button class="book-add-btn" data-bs-toggle="modal" data-bs-target="#addNewsModal">
+                    <i class="bi bi-plus-circle"></i>
+                    <span>Publikasikan Berita Baru</span>
+                </button>
             </div>
         </div>
 
-        <div class="card fade-in-up">
-            <div class="card-header bg-white py-3">
-                <h5 class="mb-0">
-                    <i class="bi bi-list-ul me-2"></i>
-                    Berita yang Diterbitkan (<?= count($berita) ?>)
-                </h5>
-            </div>
-            <div class="card-body p-0">
+        <!-- News Table -->
+        <div class="book-table-card fade-in-up">
+            <div class="table-responsive">
                 <?php if(count($berita) > 0): ?>
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0">
-                        <thead class="table-light">
+                    <table class="table book-table mb-0" id="newsTable">
+                        <thead>
                             <tr>
                                 <th width="5%">No</th>
-                                <th width="15%">Tanggal</th>
-                                <th width="30%">Judul</th>
-                                <th width="40%">Isi Singkat</th>
+                                <th width="12%">Tanggal</th>
+                                <th width="30%">Judul Berita</th>
+                                <th width="43%">Isi Singkat</th>
                                 <th width="10%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php 
-                            $no = 1;
+                            $no = $offset + 1;
                             foreach($berita as $row): 
                             $isi_singkat = substr($row['isi_berita'], 0, 100);
                             if(strlen($row['isi_berita']) > 100) $isi_singkat .= '...';
                             ?>
-                            <tr>
-                                <td><?= $no++ ?></td>
+                            <tr data-judul="<?= strtolower(htmlspecialchars($row['judul'])) ?>"
+                                data-timestamp="<?= strtotime($row['created_at']) ?>">
+                                <td><?= $no++ ?>.</td>
                                 <td>
-                                    <span class="badge bg-secondary">
-                                        <i class="bi bi-calendar-event me-1"></i>
-                                        <?= date('d M Y', strtotime($row['tanggal'])) ?>
+                                    <span class="date-badge">
+                                        <?= date('d M Y', strtotime($row['created_at'])) ?>
                                     </span>
                                 </td>
                                 <td>
-                                    <strong><?= htmlspecialchars($row['judul']) ?></strong>
+                                    <div class="book-title-cell">
+                                        <?= htmlspecialchars($row['judul']) ?>
+                                    </div>
                                 </td>
                                 <td>
-                                    <small class="text-muted">
+                                    <div class="book-author-cell" style="white-space: normal; line-height: 1.4;">
                                         <?= htmlspecialchars($isi_singkat) ?>
-                                    </small>
+                                    </div>
                                 </td>
                                 <td>
-                                    <a href="?hapus=<?= $row['id'] ?>" 
-                                       class="btn btn-sm btn-danger" 
-                                       onclick="return confirm('Yakin ingin menghapus berita ini?')">
-                                        <i class="bi bi-trash"></i>
-                                    </a>
+                                    <div class="book-action-buttons">
+                                        <button class="book-action-icon view-icon" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#previewModal<?= $row['id'] ?>"
+                                                title="Lihat">
+                                            <i class="bi bi-eye-fill"></i>
+                                        </button>
+                                        <a href="?hapus=<?= $row['id'] ?>" 
+                                           class="book-action-icon delete-icon" 
+                                           onclick="return confirm('Yakin ingin menghapus berita ini?')"
+                                           title="Hapus">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </a>
+                                    </div>
 
+                                    <!-- Preview Modal -->
                                     <div class="modal fade" id="previewModal<?= $row['id'] ?>" tabindex="-1">
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
@@ -178,42 +180,207 @@ $berita = $pdo->query("SELECT * FROM news ORDER BY created_at DESC")->fetchAll()
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-                </div>
                 <?php else: ?>
-                <div class="text-center py-5">
-                    <i class="bi bi-inbox" style="font-size: 4rem; color: var(--gray-30);"></i>
-                    <h5 class="mt-3 text-muted">Belum ada berita</h5>
-                    <p class="text-muted">Publikasikan berita pertama Anda di atas</p>
-                </div>
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="bi bi-inbox"></i>
+                        </div>
+                        <h5 class="empty-title">Belum ada berita</h5>
+                        <p class="empty-subtitle">Publikasikan berita pertama dengan tombol di atas</p>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
+        
+        <!-- Pagination -->
+        <?php if ($total_pages > 1): ?>
+            <div class="pagination-wrapper">
+                <div class="pagination-info">
+                    Menampilkan <?= $offset + 1 ?>-<?= min($offset + $limit, $total_berita) ?> dari <?= $total_berita ?>
+                </div>
+                <div class="pagination-controls">
+                    <?php if ($page > 1): ?>
+                        <a href="?page=<?= $page - 1 ?>" class="pagination-btn pagination-arrow">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    <?php else: ?>
+                        <span class="pagination-btn pagination-arrow disabled">
+                            <i class="bi bi-chevron-left"></i>
+                        </span>
+                    <?php endif; ?>
+                    
+                    <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                        <?php if ($i == 1 || $i == $total_pages || ($i >= $page - 1 && $i <= $page + 1)): ?>
+                            <a href="?page=<?= $i ?>" class="pagination-btn <?= $i == $page ? 'active' : '' ?>">
+                                <?= $i ?>
+                            </a>
+                        <?php elseif ($i == $page - 2 || $i == $page + 2): ?>
+                            <span class="pagination-dots">...</span>
+                        <?php endif; ?>
+                    <?php endfor; ?>
+                    
+                    <?php if ($page < $total_pages): ?>
+                        <a href="?page=<?= $page + 1 ?>" class="pagination-btn pagination-arrow">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    <?php else: ?>
+                        <span class="pagination-btn pagination-arrow disabled">
+                            <i class="bi bi-chevron-right"></i>
+                        </span>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
 
-        <div class="card mt-4 fade-in-up border-primary">
-            <div class="card-body">
-                <h6 class="mb-3">
-                    <i class="bi bi-lightbulb-fill text-warning me-2"></i>
-                    Tips Menulis Berita
-                </h6>
-                <div class="row">
-                    <div class="col-md-6">
-                        <ul class="mb-0">
-                            <li>Gunakan judul yang jelas dan menarik perhatian</li>
-                            <li>Tulis dengan bahasa yang mudah dipahami</li>
-                            <li>Sertakan informasi lengkap (5W+1H)</li>
-                        </ul>
+    <!-- Add News Modal -->
+    <div class="modal fade" id="addNewsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+                <div class="modal-header" style="border-bottom: 1px solid #f0f0f0; padding: 1.5rem 2rem;">
+                    <div>
+                        <h5 class="modal-title" style="color: #424242; font-weight: 600; font-size: 1.25rem; margin-bottom: 0.25rem;">Publikasikan Berita Baru</h5>
+                        <p class="text-muted mb-0" style="font-size: 0.875rem;">Lengkapi informasi berita untuk dipublikasikan</p>
                     </div>
-                    <div class="col-md-6">
-                        <ul class="mb-0">
-                            <li>Periksa kembali sebelum publikasi</li>
-                            <li>Update berita secara berkala</li>
-                            <li>Sertakan tanggal/waktu jika ada agenda</li>
-                        </ul>
-                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 2rem;">
+                    <form action="" method="POST" id="addNewsForm">
+                        <div class="form-group">
+                            <label>
+                                <i class="bi bi-bookmark me-1"></i>
+                                Judul Berita / Agenda
+                            </label>
+                            <input type="text" name="judul" class="form-control" placeholder="Contoh: Koleksi Buku Baru Bulan Ini" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="bi bi-text-paragraph me-1"></i>
+                                Isi Berita / Informasi
+                            </label>
+                            <textarea name="isi" class="form-control" rows="8" placeholder="Tulis informasi lengkap di sini..." required></textarea>
+                            <small class="text-muted">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Gunakan Enter untuk membuat paragraf baru
+                            </small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid #f0f0f0; padding: 1rem 2rem;">
+                    <button type="button" class="btn" style="background: #f5f5f5; color: #616161; border-radius: 8px; padding: 0.6rem 1.5rem;" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" name="tambah_berita" form="addNewsForm" class="btn" style="background: #6F4D38; color: white; border-radius: 8px; padding: 0.6rem 1.5rem;">
+                        Terbitkan Sekarang
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const searchInput = document.getElementById('searchInput');
+            const newsTable = document.getElementById('newsTable');
+            const tableRows = newsTable ? newsTable.querySelectorAll('tbody tr') : [];
+            
+            // Filter state
+            let currentDateFilter = 'all';
+            
+            // Search functionality
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    applyFilters();
+                });
+            }
+            
+            // Date filter
+            const dateFilterOptions = document.querySelectorAll('.date-filter-option');
+            const dateFilterText = document.getElementById('dateFilterText');
+            
+            dateFilterOptions.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    dateFilterOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    currentDateFilter = this.dataset.filter;
+                    if (dateFilterText) {
+                        const dateFilterNames = {
+                            'all': 'Tanggal',
+                            'today': 'Hari Ini',
+                            'week': '7 Hari',
+                            'month': '30 Hari',
+                            'year': 'Tahun Ini'
+                        };
+                        dateFilterText.textContent = dateFilterNames[currentDateFilter] || 'Tanggal';
+                    }
+                    
+                    applyFilters();
+                });
+            });
+            
+            function applyFilters() {
+                const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
+                const now = new Date();
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                let visibleCount = 0;
+                
+                tableRows.forEach(row => {
+                    const judul = row.dataset.judul || '';
+                    const timestamp = parseInt(row.dataset.timestamp) * 1000;
+                    const rowDate = new Date(timestamp);
+                    
+                    // Search: if empty, all pass; if has value, check if matches
+                    const matchSearch = searchTerm === '' || judul.includes(searchTerm);
+                    
+                    // Date filter: if 'all', all pass; if specific, check date range
+                    let matchDate = true;
+                    if (currentDateFilter !== 'all') {
+                        if (currentDateFilter === 'today') {
+                            matchDate = rowDate >= today;
+                        } else if (currentDateFilter === 'week') {
+                            const weekAgo = new Date(today);
+                            weekAgo.setDate(weekAgo.getDate() - 7);
+                            matchDate = rowDate >= weekAgo;
+                        } else if (currentDateFilter === 'month') {
+                            const monthAgo = new Date(today);
+                            monthAgo.setDate(monthAgo.getDate() - 30);
+                            matchDate = rowDate >= monthAgo;
+                        } else if (currentDateFilter === 'year') {
+                            const yearStart = new Date(now.getFullYear(), 0, 1);
+                            matchDate = rowDate >= yearStart;
+                        }
+                    }
+                    
+                    // Show row only if ALL active filters match (AND logic)
+                    if (matchSearch && matchDate) {
+                        row.style.display = '';
+                        visibleCount++;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+                
+                updateTableNumbers();
+                console.log(`Showing ${visibleCount} results`);
+            }
+            
+            function updateTableNumbers() {
+                let visibleIndex = 1;
+                tableRows.forEach(row => {
+                    if (row.style.display !== 'none') {
+                        const firstCell = row.querySelector('td:first-child');
+                        if (firstCell) {
+                            firstCell.textContent = visibleIndex + '.';
+                            visibleIndex++;
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

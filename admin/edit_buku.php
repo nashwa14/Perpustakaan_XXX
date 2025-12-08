@@ -56,42 +56,42 @@ if (isset($_POST['update'])) {
 <body>
     <?php include '../includes/navbar_admin.php'; ?>
     <div class="container my-4">
-        <div class="page-header fade-in-up">
-            <h1>
-                <i class="bi bi-pencil-square me-3"></i>
-                Edit Data Buku
-            </h1>
-            <p>Perbarui informasi buku yang sudah ada</p>
+        <!-- Page Header -->
+        <div class="welcome-header fade-in-up">
+            <h1 class="welcome-title">Edit Data Buku</h1>
+            <p class="welcome-subtitle">Perbarui informasi buku yang sudah ada di koleksi perpustakaan</p>
         </div>
 
-        <nav aria-label="breadcrumb" class="mb-4">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="kelola_buku.php">Kelola Buku</a></li>
-                <li class="breadcrumb-item active">Edit Buku</li>
-            </ol>
-        </nav>
-
-        <div class="card fade-in-up">
-            <div class="card-header bg-warning text-dark">
-                <h5 class="mb-0">
-                    <i class="bi bi-pencil-fill me-2"></i>
-                    Form Edit Buku
-                </h5>
-            </div>
-            <div class="card-body p-4">
+        <div class="book-table-card fade-in-up">
+            <div class="p-4">
                 <form action="" method="POST" enctype="multipart/form-data">
 
-                    <div class="form-group">
-                        <label>
-                            <i class="bi bi-bookmark me-1"></i>
-                            Judul Buku
-                        </label>
-                        <input type="text"
-                            name="judul"
-                            class="form-control"
-                            value="<?= htmlspecialchars($buku['judul']) ?>"
-                            required>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <label>
+                                    <i class="bi bi-bookmark me-1"></i>
+                                    Judul Buku
+                                </label>
+                                <input type="text"
+                                    name="judul"
+                                    class="form-control"
+                                    value="<?= htmlspecialchars($buku['judul']) ?>"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>
+                                    <i class="bi bi-box-seam me-1"></i>
+                                    Stok
+                                </label>
+                                <input type="number"
+                                    name="stok"
+                                    class="form-control"
+                                    value="<?= $buku['stok'] ?>">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -108,7 +108,7 @@ if (isset($_POST['update'])) {
                                     required>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>
                                     <i class="bi bi-tag me-1"></i>
@@ -118,18 +118,6 @@ if (isset($_POST['update'])) {
                                     name="kategori"
                                     class="form-control"
                                     value="<?= htmlspecialchars($buku['kategori']) ?>">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>
-                                    <i class="bi bi-box-seam me-1"></i>
-                                    Stok
-                                </label>
-                                <input type="number"
-                                    name="stok"
-                                    class="form-control"
-                                    value="<?= $buku['stok'] ?>">
                             </div>
                         </div>
                     </div>
@@ -164,15 +152,13 @@ if (isset($_POST['update'])) {
                         </small>
                     </div>
 
-                    <div class="d-flex gap-2 mt-4">
-                        <button type="submit" name="update" class="btn btn-primary">
-                            <i class="bi bi-save me-2"></i>
-                            Simpan Perubahan
-                        </button>
-                        <a href="kelola_buku.php" class="btn btn-danger">
-                            <i class="bi bi-x-circle me-2"></i>
+                    <div class="d-flex gap-2 mt-4 pt-3 justify-content-end" style="border-top: 1px solid #f0f0f0;">
+                        <a href="kelola_buku.php" class="btn" style="background: #f5f5f5; color: #616161; border-radius: 8px; padding: 0.6rem 1.5rem; font-weight: 500; text-decoration: none;">
                             Batal
                         </a>
+                        <button type="submit" name="update" class="btn" style="background: #6F4D38; color: white; border-radius: 8px; padding: 0.6rem 1.5rem; font-weight: 500;">
+                            Simpan Perubahan
+                        </button>
                     </div>
                 </form>
             </div>
