@@ -1136,6 +1136,15 @@ footer {
   }
 }
 
+.forgot-link {
+  transition: all 0.3s ease;
+  position: relative;
+}
+.forgot-link:hover {
+  color: #0d6efd !important;
+  text-decoration: underline !important;
+}
+
 /* Small Mobile */
 @media (max-width: 480px) {
   .catalog-grid {
