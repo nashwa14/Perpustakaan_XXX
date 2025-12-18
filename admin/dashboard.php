@@ -15,7 +15,6 @@ if (isset($_GET['act']) && isset($_GET['id'])) {
     }
     header("Location: dashboard.php");
 }
-
 // Pagination for pending loans
 $limit = 5;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
