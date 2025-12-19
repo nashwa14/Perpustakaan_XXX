@@ -1,0 +1,321 @@
+/* ===================================
+   NAVBAR STYLES - IMPROVED VERSION
+   =================================== */
+
+/* Main Navbar */
+.main-navbar {
+    background-color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(93, 64, 55, 0.08);
+    padding: 0.75rem 0;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(93, 64, 55, 0.1);
+}
+
+/* Brand Section */
+.navbar-brand {
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+.navbar-logo {
+    /* Larger logo without overflowing navbar */
+    height: 64px;
+    max-height: 72px;
+    width: auto;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.brand-text {
+    color: #5d4037;
+    letter-spacing: 0.2px;
+}
+
+/* Navigation Links - IMPROVED ACTIVE STATE */
+.navbar-nav .nav-link {
+    color: #666666;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+    margin: 0 0.2rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    text-decoration: none;
+    border: 1px solid transparent;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #5d4037;
+    background-color: rgba(93, 64, 55, 0.05);
+    transform: translateY(-1px);
+}
+
+/* ACTIVE STATE FIXED - hanya satu garis bawah */
+.navbar-nav .nav-link.active {
+    color: #5d4037 !important;
+    font-weight: 700 !important;
+    background-color: transparent !important;
+}
+
+.navbar-nav .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 3px;
+    background: linear-gradient(90deg, #5d4037 0%, #7a5c4e 100%);
+    border-radius: 2px 2px 0 0;
+    animation: underlineSlide 0.3s ease-out;
+}
+
+@keyframes underlineSlide {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+    to {
+        width: 30px;
+        opacity: 1;
+    }
+}
+
+/* Profile name in navbar */
+.profile-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #5d4037;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Avatar Profile */
+.avatar-profile {
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.avatar-profile:hover {
+    transform: scale(1.05);
+    border-color: #5d4037 !important;
+    box-shadow: 0 4px 12px rgba(93, 64, 55, 0.2);
+}
+
+.avatar-sm {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+}
+
+.avatar-lg {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    box-shadow: 0 0 0 2px #fff;
+}
+
+/* Login Button - Before Login */
+.btn-login-custom {
+    background: linear-gradient(135deg, #5d4037 0%, #7a5c4e 100%);
+    color: #ffffff !important;
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 8px rgba(93, 64, 55, 0.2);
+    display: flex;
+    align-items: center;
+}
+
+.btn-login-custom:hover {
+    background: linear-gradient(135deg, #7a5c4e 0%, #5d4037 100%);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(93, 64, 55, 0.3);
+}
+
+/* Admin Panel Button */
+.btn-admin-panel {
+    background: linear-gradient(135deg, #5d4037 0%, #7a5c4e 100%);
+    color: #ffffff !important;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    border: none;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(93, 64, 55, 0.2);
+    display: flex;
+    align-items: center;
+}
+
+.btn-admin-panel:hover {
+    background: linear-gradient(135deg, #7a5c4e 0%, #5d4037 100%);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(93, 64, 55, 0.3);
+}
+
+/* Profile Dropdown */
+.profile-dropdown {
+    min-width: 280px;
+    border: 1px solid rgba(93, 64, 55, 0.1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    margin-top: 0.75rem;
+    padding: 0;
+    overflow: hidden;
+    animation: dropdownFadeIn 0.25s ease-out;
+}
+
+.profile-dropdown .dropdown-header {
+    padding: 1.25rem;
+    border: none;
+}
+
+.profile-dropdown .dropdown-item {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    color: #555555;
+    border-left: 3px solid transparent;
+}
+
+.profile-dropdown .dropdown-item:hover {
+    background-color: rgba(93, 64, 55, 0.05);
+    padding-left: 1.5rem;
+    color: #5d4037;
+    border-left-color: #5d4037;
+}
+
+.profile-dropdown .dropdown-item.text-danger:hover {
+    background-color: rgba(220, 53, 69, 0.05);
+    color: #dc3545 !important;
+    border-left-color: #dc3545;
+}
+
+.profile-dropdown .dropdown-divider {
+    margin: 0.25rem 0;
+    border-top-color: rgba(93, 64, 55, 0.1);
+}
+
+/* Dropdown Animation */
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 991.98px) {
+    .main-navbar {
+        padding: 0.5rem 0;
+    }
+
+    .navbar-nav {
+        padding: 1rem 0;
+        background-color: #ffffff;
+        border-radius: 8px;
+        margin-top: 0.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .navbar-nav .nav-link {
+        margin: 0.25rem 0;
+        padding: 0.75rem 1rem;
+        text-align: center;
+    }
+
+    /* Mobile active state */
+    .navbar-nav .nav-link.active::after {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        bottom: 5px;
+    }
+
+    .btn-login-custom,
+    .btn-admin-panel {
+        width: 100%;
+        justify-content: center;
+        margin: 0.5rem 0;
+    }
+
+    .profile-name {
+        display: inline !important;
+        max-width: none;
+    }
+
+    .nav-item.dropdown .nav-link {
+        justify-content: center;
+    }
+}
+
+/* Navbar Toggler */
+.navbar-toggler {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid rgba(93, 64, 55, 0.2);
+    transition: all 0.3s ease;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(93, 64, 55, 0.25);
+    outline: none;
+}
+
+.navbar-toggler:hover {
+    background-color: rgba(93, 64, 55, 0.05);
+    border-color: #5d4037;
+}
+
+/* Smooth transitions */
+.navbar-collapse {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Icon styling */
+.bi {
+    vertical-align: middle;
+}
+
+.nav-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+/* Fix untuk dropdown toggle */
+.dropdown-toggle::after {
+    vertical-align: middle;
+    margin-left: 0.5rem;
+}
+
+/* Badge styling */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}

@@ -4,9 +4,8 @@
             <img src="assets/uploads/logo.png"
                  alt="Logo Perpustakaan"
                  class="navbar-logo"
-                 style="height: 50px"
                  onerror="this.style.display='none'">
-            <span class="fw-semibold ms-2" style="color: #5d4037;">Perpustakaan Yogakarta</span>
+            <span class="fw-semibold ms-2 brand-text">Perpustakaan Yogyakarta</span>
         </a>
         <button class="navbar-toggler" type="button"
                 data-bs-toggle="collapse"
@@ -42,92 +41,118 @@
                                 Riwayat
                             </a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle p-0" 
+                        <li class="nav-item dropdown ms-2">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" 
                                href="#" 
                                id="profileDropdown"
                                role="button"
                                data-bs-toggle="dropdown"
                                aria-expanded="false">
-                                <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['nama']) ?>&background=5d4037&color=fff&size=45&bold=true" 
-                                     alt="Avatar" 
-                                     class="rounded-circle"
-                                     style="width: 45px; height: 45px; object-fit: cover; border: 2px solid #e0e0e0;">
+                                  <div class="position-relative">
+                                     <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['nama']) ?>&background=5d4037&color=fff&size=45&bold=true" 
+                                         alt="Avatar" 
+                                         class="rounded-circle avatar-profile avatar-sm">
+                                     <span class="position-absolute bottom-0 end-0 bg-success border border-2 border-white rounded-circle status-dot"></span>
+                                </div>
+                                <span class="ms-2 d-none d-lg-inline profile-name"><?= htmlspecialchars(explode(' ', $_SESSION['nama'])[0]) ?></span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end profile-dropdown shadow-sm" aria-labelledby="profileDropdown">
-                                <li class="dropdown-header">
+                            <ul class="dropdown-menu dropdown-menu-end profile-dropdown shadow-lg" aria-labelledby="profileDropdown">
+                                <li class="dropdown-header p-3" style="background: linear-gradient(135deg, #5d4037 0%, #7a5c4e 100%);">
                                     <div class="d-flex align-items-center gap-3">
-                                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['nama']) ?>&background=5d4037&color=fff&size=50&bold=true" 
-                                             alt="Avatar" 
-                                             class="rounded-circle"
-                                             style="width: 50px; height: 50px; object-fit: cover;">
+                                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['nama']) ?>&background=5d4037&color=fff&size=60&bold=true" 
+                                            alt="Avatar" 
+                                            class="rounded-circle avatar-lg">
                                         <div>
-                                            <div class="fw-bold text-dark"><?= htmlspecialchars($_SESSION['nama']) ?></div>
-                                            <small class="text-muted"><?= isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Anggota' ?></small>
+                                            <div class="fw-bold text-white mb-1"><?= htmlspecialchars($_SESSION['nama']) ?></div>
+                                            <div class="badge bg-light text-dark"><?= isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Anggota' ?></div>
                                         </div>
                                     </div>
                                 </li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li><hr class="dropdown-divider my-2"></li>
                                 <li>
-                                    <a class="dropdown-item" href="profil.php">
-                                        Profil Saya
+                                    <a class="dropdown-item py-2" href="profil.php">
+                                        <i class="bi bi-person me-2 nav-icon"></i> Profil Saya
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item text-danger" 
+                                    <a class="dropdown-item py-2" href="riwayat.php">
+                                        <i class="bi bi-clock-history me-2 nav-icon"></i> Riwayat Peminjaman
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider my-2"></li>
+                                <li>
+                                    <a class="dropdown-item py-2 text-danger" 
                                        href="logout.php"
                                        onclick="return confirm('Yakin ingin logout?')">
-                                        Keluar
+                                        <i class="bi bi-box-arrow-right me-2 nav-icon"></i> Keluar
                                     </a>
                                 </li>
                             </ul>
                         </li>
                     <?php elseif ($_SESSION['role'] == 'admin'): ?>
                         <li class="nav-item">
-                            <a class="nav-link nav-admin-btn" href="admin/dashboard.php">
-                                Panel Admin
+                            <a class="btn btn-admin-panel" href="admin/dashboard.php">
+                                <i class="bi bi-speedometer2 me-1 nav-icon"></i> Panel Admin
                             </a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle p-0" 
+                        <li class="nav-item dropdown ms-2">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" 
                                href="#" 
                                id="profileDropdown"
                                role="button"
                                data-bs-toggle="dropdown"
                                aria-expanded="false">
-                                <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['nama']) ?>&background=5d4037&color=fff&size=45&bold=true" 
-                                     alt="Avatar" 
-                                     class="rounded-circle"
-                                     style="width: 45px; height: 45px; object-fit: cover; border: 2px solid #e0e0e0;">
+                                  <div class="position-relative">
+                                     <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['nama']) ?>&background=5d4037&color=fff&size=45&bold=true" 
+                                         alt="Avatar" 
+                                         class="rounded-circle avatar-profile avatar-sm">
+                                     <span class="position-absolute bottom-0 end-0 bg-warning border border-2 border-white rounded-circle status-dot"></span>
+                                </div>
+                                <span class="ms-2 d-none d-lg-inline profile-name"><?= htmlspecialchars(explode(' ', $_SESSION['nama'])[0]) ?></span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end profile-dropdown shadow-sm" aria-labelledby="profileDropdown">
-                                <li class="dropdown-header">
+                            <ul class="dropdown-menu dropdown-menu-end profile-dropdown shadow-lg" aria-labelledby="profileDropdown">
+                                <li class="dropdown-header p-3" style="background: linear-gradient(135deg, #5d4037 0%, #7a5c4e 100%);">
                                     <div class="d-flex align-items-center gap-3">
-                                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['nama']) ?>&background=5d4037&color=fff&size=50&bold=true" 
-                                             alt="Avatar" 
-                                             class="rounded-circle"
-                                             style="width: 50px; height: 50px; object-fit: cover;">
+                                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['nama']) ?>&background=5d4037&color=fff&size=60&bold=true" 
+                                            alt="Avatar" 
+                                            class="rounded-circle avatar-lg">
                                         <div>
-                                            <div class="fw-bold text-dark"><?= htmlspecialchars($_SESSION['nama']) ?></div>
-                                            <small class="text-muted">Admin</small>
+                                            <div class="fw-bold text-white mb-1"><?= htmlspecialchars($_SESSION['nama']) ?></div>
+                                            <div class="badge bg-warning text-dark">Admin</div>
                                         </div>
                                     </div>
                                 </li>
-                                <li><hr class="dropdown-divider"></li>
+                                <li><hr class="dropdown-divider my-2"></li>
                                 <li>
-                                    <a class="dropdown-item text-danger" 
+                                    <a class="dropdown-item py-2" href="admin/dashboard.php">
+                                        <i class="bi bi-speedometer2 me-2 nav-icon"></i> Dashboard
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="admin/kelola_buku.php">
+                                        <i class="bi bi-book me-2 nav-icon"></i> Kelola Buku
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="admin/kelola_anggota.php">
+                                        <i class="bi bi-people me-2 nav-icon"></i> Kelola Anggota
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider my-2"></li>
+                                <li>
+                                    <a class="dropdown-item py-2 text-danger" 
                                        href="logout.php"
                                        onclick="return confirm('Yakin ingin logout?')">
-                                        Keluar
+                                        <i class="bi bi-box-arrow-right me-2 nav-icon"></i> Keluar
                                     </a>
                                 </li>
                             </ul>
                         </li>
                     <?php endif; ?>
                 <?php else: ?>
-                    <li class="nav-item">
-                        <a class="btn btn-primary nav-login-btn ms-lg-2" href="login.php">
-                            Login
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-login-custom" href="login.php">
+                            <i class="bi bi-box-arrow-in-right me-2 nav-icon"></i> Login
                         </a>
                     </li>
                 <?php endif; ?>
